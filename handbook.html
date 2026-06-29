@@ -6,413 +6,755 @@
 <title>OTA活用ハンドブック | InnBuddy</title>
 <style>
   :root {
-    --primary: #1a3a5c;
-    --accent: #2d7fb9;
-    --accent-light: #e8f4fc;
-    --accent-border: #bdd8ee;
+    --coral: #e85d3a;
+    --coral-dark: #c94d2e;
+    --coral-light: #fff4ed;
+    --teal: #0d7377;
+    --teal-dark: #095e61;
+    --teal-light: #e6f6f6;
+    --gold: #d4942b;
+    --gold-light: #fff9ee;
+    --navy: #0d1b2a;
+    --navy-light: #1b2d44;
     --text: #1a1a2e;
     --text-muted: #5a6a7a;
-    --bg: #f8f9fb;
+    --bg: #f8f6f4;
     --card-bg: #ffffff;
-    --border: #e2e8f0;
-    --tag-bg: #eef2f7;
-    --shadow: 0 1px 3px rgba(0,0,0,.08);
-    --orange: #c2410c;
-    --orange-light: #fff7ed;
-    --green: #65a30d;
-    --green-light: #f7fee7;
+    --border: #e8e2dc;
+    --shadow: 0 2px 8px rgba(0,0,0,.06);
+    --radius: 12px;
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{font-family:"Hiragino Kaku Gothic ProN","Noto Sans JP","Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.8;font-size:15px}
-  .container{max-width:960px;margin:0 auto;padding:0 24px}
+  body{font-family:"Hiragino Kaku Gothic ProN","Noto Sans JP","Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.9;font-size:15px}
+  .container{max-width:1000px;margin:0 auto;padding:0 28px}
 
-  header{background:linear-gradient(135deg,var(--primary) 0%,#2a5a7a 100%);color:#fff;padding:56px 0 44px}
-  header h1{font-size:2rem;font-weight:700;letter-spacing:.05em;margin-bottom:6px}
-  header .sub{font-size:.95rem;opacity:.85;margin-bottom:4px}
-  header .meta{font-size:.82rem;opacity:.6}
+  header {
+    background: linear-gradient(135deg, var(--navy) 0%, #122a42 30%, #1a4a5e 55%, #c94d2e 85%, var(--coral) 100%);
+    color: #fff;
+    padding: 64px 0 52px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: radial-gradient(ellipse at 80% 20%, rgba(212,148,43,.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  header .container{position:relative;z-index:1}
+  header .badge{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.1em;padding:4px 14px;border-radius:20px;background:rgba(255,255,255,.15);backdrop-filter:blur(4px);margin-bottom:14px;text-transform:uppercase}
+  header h1{font-size:2.4rem;font-weight:800;letter-spacing:.03em;margin-bottom:8px;line-height:1.2}
+  header h1 span{display:inline-block;background:linear-gradient(135deg,var(--gold),#f0b840);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  header .sub{font-size:1.05rem;opacity:.9;margin-bottom:4px;font-weight:500}
+  header .meta{font-size:.8rem;opacity:.6;margin-top:8px}
 
-  nav.toc{background:var(--card-bg);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+  nav.toc{background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
   nav.toc .inner{display:flex;gap:4px;overflow-x:auto;padding:10px 0;scrollbar-width:none}
   nav.toc .inner::-webkit-scrollbar{display:none}
-  nav.toc a{flex-shrink:0;font-size:.78rem;font-weight:600;color:var(--text-muted);text-decoration:none;padding:6px 14px;border-radius:20px;white-space:nowrap;transition:all .2s}
-  nav.toc a:hover,nav.toc a.active{color:var(--accent);background:var(--accent-light)}
+  nav.toc a{flex-shrink:0;font-size:.75rem;font-weight:600;color:var(--text-muted);text-decoration:none;padding:6px 14px;border-radius:20px;white-space:nowrap;transition:all .2s;border:1px solid transparent}
+  nav.toc a:hover{color:var(--coral);background:var(--coral-light);border-color:var(--coral)}
+  nav.toc a.active{color:#fff;background:var(--coral);border-color:var(--coral)}
 
-  section{padding:48px 0}
+  section{padding:52px 0}
   section:nth-child(even){background:var(--card-bg)}
-  .section-number{display:inline-block;background:var(--accent);color:#fff;font-size:.7rem;font-weight:700;padding:2px 10px;border-radius:10px;margin-bottom:8px;letter-spacing:.03em}
-  section h2{font-size:1.3rem;color:var(--primary);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--accent-border)}
-  .lead{color:var(--text-muted);font-size:.88rem;margin-bottom:20px;line-height:1.7}
-  .subsection{margin-bottom:28px}
-  .subsection h3{font-size:1.05rem;color:var(--primary);margin-bottom:8px;display:flex;align-items:center;gap:8px}
-  .subsection h3 .num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--accent-light);color:var(--accent);font-size:.7rem;font-weight:700;flex-shrink:0}
-  .subsection p{font-size:.87rem;color:var(--text);margin-bottom:6px}
-  .subsection ul{list-style:none;padding:0;margin:4px 0 8px}
-  .subsection ul li{font-size:.84rem;color:var(--text-muted);padding:3px 0 3px 18px;position:relative}
-  .subsection ul li::before{content:"▸";position:absolute;left:0;color:var(--accent)}
+  .section-number{display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:700;letter-spacing:.08em;margin-bottom:8px;padding:3px 12px 3px 10px;border-radius:20px;text-transform:uppercase}
+  .section-number.part1{background:var(--coral-light);color:var(--coral)}
+  .section-number.part2{background:var(--teal-light);color:var(--teal)}
+  .section-number.part3{background:var(--gold-light);color:var(--gold)}
+  section h2{font-size:1.5rem;color:var(--navy);margin-bottom:4px;font-weight:700}
+  .section-desc{color:var(--text-muted);font-size:.9rem;margin-bottom:24px;line-height:1.7}
 
-  .table-wrap{overflow-x:auto;margin:12px 0 16px;border-radius:8px;border:1px solid var(--border)}
+  .divider{height:3px;background:linear-gradient(90deg,var(--coral),var(--gold),var(--teal));border-radius:3px;margin:0 0 28px;width:80px}
+
+  .subsection{margin-bottom:32px}
+  .subsection h3{font-size:1.1rem;color:var(--navy);margin-bottom:10px;display:flex;align-items:flex-start;gap:10px;line-height:1.4}
+  .subsection h3 .num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:1px}
+  .subsection h3 .num.coral{background:var(--coral);color:#fff}
+  .subsection h3 .num.teal{background:var(--teal);color:#fff}
+  .subsection h3 .num.gold{background:var(--gold);color:#fff}
+  .subsection p{font-size:.88rem;color:var(--text);margin-bottom:8px;line-height:1.8}
+  .subsection ul{list-style:none;padding:0;margin:6px 0 12px}
+  .subsection ul li{font-size:.85rem;color:var(--text-muted);padding:4px 0 4px 20px;position:relative;line-height:1.7}
+  .subsection ul li::before{content:"";position:absolute;left:4px;top:12px;width:6px;height:6px;border-radius:50%}
+  .subsection ul li.coral::before{background:var(--coral)}
+  .subsection ul li.teal::before{background:var(--teal)}
+  .subsection ul li.gold::before{background:var(--gold)}
+
+  .table-wrap{overflow-x:auto;margin:14px 0 18px;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow)}
   table{width:100%;border-collapse:collapse;font-size:.82rem}
-  th{background:var(--primary);color:#fff;font-weight:600;padding:10px 12px;text-align:left;white-space:nowrap}
-  td{padding:9px 12px;border-bottom:1px solid var(--border)}
+  th{font-weight:600;padding:11px 14px;text-align:left;white-space:nowrap;color:#fff}
+  th.coral{background:var(--coral)}
+  th.teal{background:var(--teal)}
+  th.gold{background:var(--gold)}
+  th.navy{background:var(--navy)}
+  td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:.82rem;line-height:1.6}
   tr:last-child td{border-bottom:none}
-  tr:nth-child(even) td{background:#f8fafc}
+  tr:nth-child(even) td{background:#faf8f6}
 
-  .highlight-box{padding:16px 20px;border-radius:8px;margin:12px 0 16px;font-size:.85rem;border-left:4px solid}
-  .highlight-box.info{background:var(--accent-light);border-color:var(--accent)}
-  .highlight-box.warn{background:var(--orange-light);border-color:var(--orange)}
-  .highlight-box.success{background:var(--green-light);border-color:var(--green)}
-  .highlight-box h4{font-size:.9rem;margin-bottom:4px;color:var(--primary)}
+  .callout{padding:20px 24px;border-radius:var(--radius);margin:16px 0 20px;font-size:.86rem;line-height:1.8;border-left:5px solid}
+  .callout.coral{background:var(--coral-light);border-color:var(--coral)}
+  .callout.teal{background:var(--teal-light);border-color:var(--teal)}
+  .callout.gold{background:var(--gold-light);border-color:var(--gold)}
+  .callout h4{font-size:.92rem;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .callout p{margin-bottom:4px}
+  .callout p:last-child{margin-bottom:0}
 
-  .tag{display:inline-block;font-size:.68rem;padding:2px 8px;border-radius:4px;background:var(--tag-bg);color:var(--text-muted);font-weight:500;margin-right:4px;margin-bottom:4px}
+  .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0 18px}
+  .kpi-card{padding:16px;border-radius:10px;border:1px solid var(--border);background:var(--card-bg)}
+  .kpi-card .kpi-label{font-size:.72rem;font-weight:700;color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+  .kpi-card .kpi-kv{font-size:1.1rem;font-weight:700;color:var(--navy)}
+  .kpi-card .kpi-desc{font-size:.78rem;color:var(--text-muted);margin-top:2px}
 
-  footer{text-align:center;padding:32px 0;color:var(--text-muted);font-size:.78rem;border-top:1px solid var(--border)}
+  .two-col{display:grid;grid-template-columns:1fr;gap:16px;margin:14px 0 18px}
+  @media(min-width:640px){.two-col{grid-template-columns:1fr 1fr}}
 
-  @media(min-width:640px){header h1{font-size:2.2rem}}
+  footer{text-align:center;padding:36px 0;color:var(--text-muted);font-size:.78rem;border-top:1px solid var(--border)}
+  footer .inn{color:var(--coral);font-weight:600}
+
+  @media(min-width:860px){header h1{font-size:2.8rem}}
 </style>
 </head>
 <body>
 
 <header>
   <div class="container">
-    <p class="sub">InnBuddy Internal Knowledge</p>
-    <h1>OTA活用ハンドブック</h1>
-    <p class="sub">インバウンドOTA戦略の全体像と実践アプローチ</p>
-    <p class="meta">全7章 &mdash; 2025年6月更新</p>
+    <div class="badge">InnBuddy Knowledge Base</div>
+    <h1>OTA活用ハンドブック <span>&amp; 収益戦略</span></h1>
+    <p class="sub">宿泊施設のための、原理原則から実践まで</p>
+    <p class="meta">全11章 &mdash; 2025年6月更新</p>
   </div>
 </header>
 
 <nav class="toc">
   <div class="container inner">
-    <a href="#s1">OTAの基本</a>
-    <a href="#s2">インバウンドOTA比較</a>
-    <a href="#s3">画像戦略</a>
-    <a href="#s4">データ分析</a>
-    <a href="#s5">自社集客</a>
-    <a href="#s6">プラン設計</a>
-    <a href="#s7">診断アプローチ</a>
+    <a href="#s1">時間消滅性</a>
+    <a href="#s2">絶対的固定性</a>
+    <a href="#s3">需要変動</a>
+    <a href="#s4">多極化</a>
+    <a href="#s5">OTA基本</a>
+    <a href="#s6">インバウンド</a>
+    <a href="#s7">画像戦略</a>
+    <a href="#s8">データ分析</a>
+    <a href="#s9">自社集客</a>
+    <a href="#s10">プラン設計</a>
+    <a href="#s11">診断</a>
   </div>
 </nav>
 
 <div class="container">
 
-<!-- Section 1 -->
+<!-- ============================================================ -->
+<!-- PART 1: 私たちの宿経営に対する考え方・戦略 -->
+<!-- ============================================================ -->
+
 <section id="s1">
-  <span class="section-number">CHAPTER 01</span>
-  <h2>OTAの基本と仕組み</h2>
-  <p class="lead">OTA（Online Travel Agent）は宿泊施設と旅行者をオンラインで結ぶ予約仲介プラットフォームである。手数料と引き換えに膨大な集客力を得られる一方、依存度が高まると収益構造が脆くなる。まずは全体像を正しく理解する必要がある。</p>
+  <span class="section-number part1">01 &nbsp; 宿命</span>
+  <h2>在庫の「時間消滅性」</h2>
+  <p class="section-desc">今日の1室は、明日の1室ではない—この原理原則こそ、すべての戦略のスタートラインである。</p>
+  <div class="divider"></div>
 
   <div class="subsection">
-    <h3><span class="num">1</span> OTAのビジネスモデル</h3>
-    <p>OTAは宿泊施設に代わってオンライン上で客室販売を行い、成立した予約に対して所定の手数料を徴収する成果報酬型のビジネスモデルである。施設側は手数料を支払う代わりに、自社では獲得が難しい広範な集客チャネルと予約システムを利用できる。</p>
-    <p>手数料率は国内OTAで10〜15%、海外OTAで15〜25%が相場であり、この差が収益構造に大きく影響する。またOTAは掲載順位や検索フィルタのアルゴリズムを持っており、自社の魅せ方を最適化しなければ埋もれてしまう。</p>
+    <h3><span class="num coral">宿命</span></h3>
+    <p>「今日売れ残ってしまった部屋は、明日に持ち越せない」—これは、宿泊業に携わる皆様なら誰もが日々、身に染みて感じていらっしゃる大前提である。あえてこれを「今日の1室は、明日の1室ではない」という言葉にするのは、私たちが売っているものが、単なる「部屋という空間」ではなく、「今日という限られた時間そのもの」だからである。明日になってしまえば、その部屋が持つ今日の価値は完全に消滅する。だからこそ、毎日の1室1室が、その日限りの「一度きりの商品」であるという基本に立ち返ることが、すべての戦略のスタートラインになる。</p>
   </div>
 
   <div class="subsection">
-    <h3><span class="num">2</span> 主要OTAの分類</h3>
-    <p>OTAは大きく「国内OTA」と「海外OTA」に分類できる。国内OTAは日本人旅行者の獲得に優れ、海外OTAはインバウンド需要の取り込みに不可欠である。それぞれの特性を理解した上で、自社のターゲットに合わせた組み合わせを設計することが重要だ。</p>
-    <div class="table-wrap">
-      <table>
-        <tr><th>カテゴリ</th><th>OTA</th><th>強み</th><th>主な手数料</th></tr>
-        <tr><td rowspan="3">国内OTA</td><td>楽天トラベル</td><td>国内最大級、楽天ポイントとの連携</td><td>10〜15%</td></tr>
-        <tr><td>じゃらん</td><td>国内OTA最大手、リクルート系列の集客力</td><td>10〜15%</td></tr>
-        <tr><td>一休.com</td><td>高単価客向け、上質な宿泊施設に強い</td><td>10〜12%</td></tr>
-        <tr><td rowspan="4">海外OTA</td><td>Booking.com</td><td>世界最大級、欧州からの旅行者に強い</td><td>15〜18%</td></tr>
-        <tr><td>Expedia</td><td>北米市場、ビジネス需要に強い</td><td>15〜25%</td></tr>
-        <tr><td>Agoda</td><td>アジア圏に強く、価格訴求力が高い</td><td>15〜20%</td></tr>
-        <tr><td>Trip.com</td><td>中国市場、アジア全域に強い</td><td>15〜20%</td></tr>
-      </table>
-    </div>
+    <h3><span class="num coral">1</span> 私たちの考え方とアプローチ</h3>
+    <p>安易な一括値下げを捨て、部屋タイプごとに稼働率をコントロールする。時間消滅を防ぐために全体の稼働率を目指すことは極めて重要だが、すべての部屋を均一に値下げして埋めるアプローチは避けるべきである。私たちは、客室をお宿様独自の部屋タイプごとに切り分けて考える。特に、単価が高く宿の収益の柱となる「特別室やスイートルーム」などの高単価客室の稼働を、マストで最大化していくための専用の販売ロジックを組み立てる。</p>
+
+    <p>この考え方を支えるのは、「部屋の価値は均一ではない」という認識である。スタンダードルーム1室が空室になるのと、スイートルーム1室が空室になるのとでは、機会損失の規模が根本的に異なる。しかし多くの宿泊施設では、OTAの管理画面上で全室同じロジックで価格を連動させてしまい、高単価な部屋ほど不当に値下げされやすい状況に陥っている。私たちはこの構造を打破する。</p>
   </div>
 
-  <div class="highlight-box info">
-    <h4>InnBuddyの視点</h4>
-    <p>OTAは宿泊施設にとって「販売チャネル」であり「広告媒体」でもある。手数料を「コスト」と見るか「投資」と見るかで運用方針は変わる。当社はOTAを parcial 依存しながらも、データと戦略でコントロール可能なチャネルとして位置づけるべきと考える。</p>
+  <div class="subsection">
+    <h3><span class="num coral">2</span> 具体的な施策</h3>
+    <p><strong>部屋タイプごとの独立した適正価格のご提案</strong></p>
+    <p>スタンダードからスイートまで、すべての部屋を連動させて一律に上下させるのではなく、それぞれの部屋が持つ価値とターゲット層に応じた「部屋タイプごとの独立した適正価格」を算出し、ご提案する。これにより、高単価な部屋の価値を落とすことなく、確実な収益化を狙う。</p>
+    <ul>
+      <li class="coral">部屋タイプごとに独立した価格帯を設定し、需要に応じて個別に調整する</li>
+      <li class="coral">高単価客室には「希少性」を訴求する専用プランを用意し、OTA上での露出を差別化する</li>
+      <li class="coral">スタンダードルームの値下げで全体稼働率を上げつつ、高単価客室は適正価格を維持する「デュアル戦略」を採用する</li>
+      <li class="coral">曜日ごとの需要予測に基づき、部屋タイプ別に解放する在庫数をコントロールする</li>
+    </ul>
   </div>
 </section>
 
-<!-- Section 2 -->
 <section id="s2">
-  <span class="section-number">CHAPTER 02</span>
-  <h2>インバウンドOTA比較・選定</h2>
-  <p class="lead">インバウンド需要を取り込むには、ターゲットとする国・地域に強いOTAを選び、それぞれの特性に合わせた運用が必要である。単に数を増やすのではなく、ポートフォリオとして使い分けることが収益最大化の鍵となる。</p>
+  <span class="section-number part1">02 &nbsp; 宿命</span>
+  <h2>供給の「絶対的固定性」</h2>
+  <p class="section-desc">上限も下限も動かせない箱の宿命—限られた客室数をどうコントロールするか。</p>
+  <div class="divider"></div>
 
   <div class="subsection">
-    <h3><span class="num">1</span> 海外OTAの選定基準</h3>
-    <p>海外OTAは国・地域によってカバレッジが大きく異なる。日本にとって主要なインバウンド市場である東アジア・東南アジア・欧米・オセアニアそれぞれに強いOTAを押さえておく必要がある。また単一OTAに依存するのではなく、ターゲット顧客層の属性に応じて3〜5媒体に絞り込むのが現実的である。</p>
+    <h3><span class="num coral">宿命</span></h3>
+    <p>「明日急に、客室数を2倍・3倍にすることはできない」—どれだけ需要が爆発的に増えたとしても、逆に完全に冷え込んだとしても、お宿様が持つ部屋の数は決まっている。製造業のように「売れるから増産する」という調整が一切きかない。この「供給量が完全にロックされている」からこそ、今ある部屋数を「焦って早く埋めすぎない、かといって残しすぎない」という、極めて繊細なコントロールが必要になる。</p>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num coral">1</span> 私たちの考え方とアプローチ</h3>
+    <p><strong>「機会損失（売り急ぎ）」と「時間消滅（残しすぎ）」のベストバランスを狙う</strong></p>
+    <p>早く売りすぎて後半のチャンスを逃す「機会損失」と、高くしすぎて直前に空室になる「時間消滅」。この両極のバランスを、データをもとに見極める必要がある。ブレーキが強すぎて部屋を余らせてもいけないし、アクセルを踏みすぎて安売りしすぎてもいけない。</p>
+    <p>この判断を難しくしているのは、宿泊業が「二重の不確実性」にさらされている点である。すなわち「どれだけの需要があるか」の不確実性と、「競合がどのような価格設定をするか」の不確実性である。この2つの不確実性に対して、私たちは過去データとリアルタイムの予約進捗を組み合わせた確度の高い判断基準を提供する。</p>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num coral">2</span> 具体的な施策</h3>
+    <p><strong>ブッキングカーブ（予約進捗）を意識した「根拠のある価格調整」</strong></p>
+    <p>「○日前までに何室埋まっているべきか」という理想の予約進捗（ブッキングカーブ）を可視化する。直前に空室が残っているからといって、焦りからくる「安易な値下げ」はお宿様とご相談の上、できる限り無くしていく。ただし、カーブの軌道が適正ラインを下回った場合は、データという根拠を持って「戦略的な調整（価格の適正化）」を行う。勘ではなく、ロジックに基づいてアクセルとブレーキを使い分ける運用の軸を構築する。</p>
     <ul>
-      <li>Booking.com：全世界カバー、特に欧州からの旅行者に最も強い。手数料はやや高めだが集客力は抜群</li>
-      <li>Expedia Group（Expedia + Hotels.com）：北米・オセアニア市場に強い。パッケージ予約との連携が強み</li>
-      <li>Agoda：アジア圏（タイ・シンガポール・韓国など）に非常に強い。価格感応度の高い客層にリーチ</li>
-      <li>Trip.com（旧Ctrip）：中国本土からの旅行者に絶対的に強い。WeChatとの連携も重要</li>
-      <li>Airbnb：長期滞在・ファミリー層・体験志向の旅行者に向く。他OTAとは客層が異なる</li>
+      <li class="coral">過去の予約パターンを分析し、曜日別・季節別の「理想の予約曲線」を定義する</li>
+      <li class="coral">現在の予約進捗を理想曲線と比較し、乖離が生じた場合にのみ価格調整を行うルールを設定する</li>
+      <li class="coral">調整幅は段階的に設定し、一度に大きく価格を動かさないことでブランド価値を守る</li>
+      <li class="coral">在庫が一定数を下回った場合（残り3室など）は価格を維持・上昇に転じる「逆転の発想」を取り入れる</li>
     </ul>
   </div>
 
-  <div class="subsection">
-    <h3><span class="num">2</span> OTAポートフォリオ戦略</h3>
-    <p>OTAの運用でよくある失敗は「とりあえず多く掲載すれば予約が増える」という考え方である。実際にはOTAごとに客層・単価・リードタイム・キャンセル率が異なり、それらを理解せずに漫然と運用すると手数料ばかりがかさんで収益を圧迫する。</p>
-    <p>重要なのは「使い分け」である。高単価な長期滞在客が多いOTAと、短期決戦型で稼働率を上げるOTAを意図的に組み合わせ、全体としての収益を最大化する。また掲載するOTAの数は5〜7媒体程度に絞り、それぞれに適切なレートと在庫を設定することで管理精度を高める。</p>
-  </div>
-
-  <div class="subsection">
-    <h3><span class="num">3</span> 海外OTA掲載の実務ポイント</h3>
-    <p>海外OTAに掲載する際には、国内OTAとは異なる運用ルールが存在する。特に以下の点は事前に理解しておく必要がある。</p>
-    <ul>
-      <li>多言語対応：英語・中国語（簡体字）・韓国語の3言語対応が最低限求められる。施設説明・プラン名・アメニティ情報は必ず翻訳する</li>
-      <li>キャンセルポリシー：海外OTAは柔軟なキャンセルポリシーを好む傾向がある。無料キャンセル期間の設定が予約率に直結する</li>
-      <li>写真の品質：海外ゲストは写真を予約の最重要判断材料とする。日本的な「説明過多・画像不足」は避けるべき</li>
-      <li>レビュー対応：英語でのレビュー返信が評価スコアを押し上げる。ネガティブレビューには特に丁寧な対応が必要</li>
-      <li>価格設定：為替変動を考慮し、定期的な価格見直しを行う。オープンプライス（需要連動型価格設定）の導入も検討する</li>
-    </ul>
-  </div>
-
-  <div class="highlight-box warn">
-    <h4>注意点</h4>
-    <p>掲載OTAを増やす前に、運用体制の整備が先である。管理画面の運用、問い合わせ対応、レビュー管理、データ分析のサイクルを回せる状態でなければ、多チャネル運用はかえって混乱を招く。当社はまず3〜5媒体に集中し、PDCAが機能してから拡大するステップを推奨する。</p>
+  <div class="callout teal">
+    <h4>補足：ブッキングカーブの実践例</h4>
+    <p>例えば「90日前時点で全在庫の20%が予約済み」「60日前時点で40%」「30日前時点で65%」「7日前時点で85%」という理想曲線を定義する。現在の進捗がこれより上回っている場合は価格を上げ、下回っている場合は需要喚起のための施策を打つ。この基準があることで、「まだ入っていない」という漠然とした不安から安易な値下げに走るリスクを回避できる。</p>
   </div>
 </section>
 
-<!-- Section 3 -->
 <section id="s3">
-  <span class="section-number">CHAPTER 03</span>
-  <h2>画像・写真戦略</h2>
-  <p class="lead">宿泊予約サイトにおいて、写真は予約率に最も直接的な影響を与える要素である。旅行者の80%以上が写真を予約の決め手として重視しており、写真の質を高めることは最も費用対効果の高い投資のひとつである。</p>
+  <span class="section-number part1">03 &nbsp; 宿命</span>
+  <h2>需要の「激しい変動（ボラティリティ）」</h2>
+  <p class="section-desc">波を見据えた先手の戦略—四季と連休が生む需要の凹凸をどう攻略するか。</p>
+  <div class="divider"></div>
 
   <div class="subsection">
-    <h3><span class="num">1</span> OTA別 推奨画像サイズ</h3>
-    <p>OTAごとに推奨される画像サイズやアスペクト比が異なる。共通の画像で使い回すのではなく、各OTAの仕様に合わせた最適化が必要である。</p>
-    <div class="table-wrap">
-      <table>
-        <tr><th>OTA</th><th>推奨サイズ</th><th>アスペクト比</th><th>最大ファイルサイズ</th></tr>
-        <tr><td>楽天トラベル</td><td>1920×1080px以上</td><td>16:9</td><td>5MB</td></tr>
-        <tr><td>じゃらん</td><td>1920×1280px以上</td><td>3:2</td><td>5MB</td></tr>
-        <tr><td>Booking.com</td><td>2048×1536px以上</td><td>4:3</td><td>10MB</td></tr>
-        <tr><td>Expedia</td><td>1920×1080px以上</td><td>16:9</td><td>5MB</td></tr>
-        <tr><td>Agoda</td><td>2048×1536px以上</td><td>4:3</td><td>5MB</td></tr>
-        <tr><td>Trip.com</td><td>1920×1080px以上</td><td>16:9</td><td>5MB</td></tr>
-        <tr><td>Airbnb</td><td>1920×1080px以上</td><td>16:9</td><td>10MB</td></tr>
-      </table>
-    </div>
+    <h3><span class="num coral">宿命</span></h3>
+    <p>「日本の美しい四季は、同時に激しい需要の波を生む」—日本には豊かな四季がある。春の桜、夏の行楽、秋の紅葉、冬の雪。そしてGW・お盆・シルバーウィーク・年末年始など、それぞれのシーズンにおいて、人が動く時期、動かない時期（繁忙期・閑散期）は、ある程度決まっている。既存のシーズンカレンダー（料金ランク）を導入しているお宿様は多いが、単に「高い時期」「安い時期」として一括りで捉えているだけでは、この激しい波に本当に適したアプローチはできない。現に近年では、長期連休需要の中でも「繁忙日」と「閑散日」の差が顕著に出てきており、より細かなアプローチが必要である。</p>
+    <p>また、だからと言ってAI任せに価格を動的に動かしすぎると、日によって客層がブレて現場のオペレーションやシフト調整が崩壊し、リピーターのユーザーにとっての価格の信頼感も損ねてしまう。機械的なダイナミックプライシングにはこの「現場とのミスマッチ」という重大な副作用があることを認識しなければならない。</p>
   </div>
 
   <div class="subsection">
-    <h3><span class="num">2</span> 写真が予約率に与える影響</h3>
-    <p>写真の質を改善することで予約率が20〜30%向上した事例は多数報告されている。特に以下の要素が重要である。</p>
+    <h3><span class="num coral">1</span> 私たちの考え方とアプローチ</h3>
+    <p><strong>動的に動かしすぎず、シーズンごとの「ユーザーの動き」に合わせたアプローチの切り分け</strong></p>
+    <p>私たちは、機械的に価格を毎日乱高下させるようなことはしない。現場のオペレーションが安定し、かつリピーターのユーザーが安心して予約できるよう、「繁忙期に早く動くユーザー」と「閑散期に直前で動くユーザー」の特性を見極め、売り方を最初からきれいに切り分ける先手の戦略をとる。</p>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num coral">2</span> 具体的な施策</h3>
+    <p><strong>リードタイムに応じた「ターゲット別切り分け販売」の設計</strong></p>
     <ul>
-      <li>ファーストビュー（1枚目）の重要性：検索結果一覧や施設トップに表示される1枚目で「泊まりたい」と思わせなければ、2枚目以降は見られない</li>
-      <li>体験イメージの喚起：客室だけでなく、朝食・温泉・周辺景観・スタッフの接客など「そこで過ごす体験」を想像させる写真が効果的</li>
-      <li>人物の活用：人が写っている写真のほうが親しみやすく、予約転換率が高い傾向がある</li>
-      <li>季節感の演出：季節ごとに写真を更新することで、リピート訪問者にも新鮮な印象を与えられる</li>
+      <li class="coral"><strong>繁忙期アプローチ：</strong>3ヶ月〜半年前から動く「確実にその地を訪れたい優良な先行予約層」に対して、先行予約ならではのメリットを打ち出し、早い段階で確実なベース（土台）を築く。この層は値頃感よりも「確実に押さえられること」を重視するため、早割の価格設定は「安すぎず、でも価値を感じられる」絶妙なラインを設計する。</li>
+      <li class="coral"><strong>閑散期アプローチ：</strong>直前（2週間〜数日前）まで動かない「直前層」や、平日に動ける特定のターゲット層に対して、既存のメインプランとは完全に切り分けた「専用の入り口（専用プラン・チャネル）」を用意し、現場に負荷をかけない形でアプローチする。閑散期は「埋めること」より「誰に埋めてもらうか」の設計が重要である。</li>
     </ul>
   </div>
 
-  <div class="subsection">
-    <h3><span class="num">3</span> 写真改善の実践フレームワーク</h3>
-    <p>写真戦略は「撮影」「選定」「最適化」「更新」の4ステップで構成される。プロのカメラマンによる撮影が理想的だが、スマートフォンでも以下の点を押さえれば一定の品質を確保できる。</p>
-    <ul>
-      <li>明るさとコントラストの調整：露出不足の写真は暗く汚らしい印象を与える。画像編集ソフトで最低限の補正を行う</li>
-      <li>清潔感の演出：シワのないベッドメイク、整頓されたバスルームなど、細部にまで気を配る</li>
-      <li>掲載順の最適化：最多閲覧が期待される1〜3枚目に最も訴求力の高い写真を配置する</li>
-      <li>ABテストの実施：同一OTA内で異なる写真セットを期間を分けてテストし、反応の良いものを採用する</li>
-    </ul>
-  </div>
-
-  <div class="highlight-box info">
-    <h4>推奨アクション</h4>
-    <p>まずは現在掲載中の写真をすべて棚卸しし、OTA別のサイズ基準を満たしているか確認する。その上で「最も予約に貢献すべき客室」の写真から優先的に改善する。写真の品質が低いOTAから順に着手すると効率的である。</p>
+  <div class="callout gold">
+    <h4>実践のポイント</h4>
+    <p>同じ「繁忙期」でも、集中して予約が入る「特需日」（例：花火大会の日、紅葉ピークの週末）と、連休の中日のような「中休み日」では需要構造がまったく異なる。私たちはシーズンカレンダーを従来の3〜4ランクから、より細分化した5〜7ランクで設計し、それぞれに適した販売戦略を適用する。これにより、特需日の取りこぼしを防ぎつつ、中休み日には適切なプロモーションで需要創出を図る。</p>
   </div>
 </section>
 
-<!-- Section 4 -->
 <section id="s4">
-  <span class="section-number">CHAPTER 04</span>
-  <h2>データ分析・効果測定</h2>
-  <p class="lead">OTAの運用効果を正しく測定し、データに基づいた改善を行うことは長期的な成功に不可欠である。感覚や勘に頼った運用から、KPIに基づくPDCAサイクルへ移行することで、より確実な収益向上が期待できる。</p>
+  <span class="section-number part1">04 &nbsp; 宿命</span>
+  <h2>顧客ニーズの「多極化・多様化」</h2>
+  <p class="section-desc">選ばれるためのシンプルさと、直前安売りの脱却。</p>
+  <div class="divider"></div>
 
   <div class="subsection">
-    <h3><span class="num">1</span> 基本KPIの定義</h3>
-    <p>OTAの効果測定には以下のKPIを最低限トラッキングする。これらの数値を週次・月次で確認し、トレンドの変化を把握する。</p>
-    <div class="table-wrap">
-      <table>
-        <tr><th>KPI</th><th>算出方法</th><th>意味</th></tr>
-        <tr><td>露出数（インプレッション）</td><td>検索結果に表示された回数</td><td>認知度の指標</td></tr>
-        <tr><td>クリック率（CTR）</td><td>クリック数 ÷ 露出数</td><td>写真・価格・施設名の魅力</td></tr>
-        <tr><td>予約転換率（CVR）</td><td>予約数 ÷ クリック数</td><td>プラン内容・導線の最適度</td></tr>
-        <tr><td>平均客単価（ADR）</td><td>宿泊売上 ÷ 予約室数</td><td>価格設定の適正度</td></tr>
-        <tr><td>RevPAR</td><td>ADR × 稼働率</td><td>収益効率の総合指標</td></tr>
-      </table>
-    </div>
+    <h3><span class="num coral">宿命</span></h3>
+    <p>「価値観がバラバラな時代、全員に好かれようとすると誰にも刺さらない」—インバウンド、女子旅、2世代・3世代旅行、ビジネス、LGBTQ+など、現代の旅行スタイルや価値観、過ごし方の違いはかつてないほど多様化している。既存の固定概念を持った販売スタイルだけでは、この多様な需要を取り切ることはできない。しかし、その一方で「すべてに対応しよう」とプランを乱立させると、お宿様のコンセプトが崩れ、ユーザーを迷わせるだけでなく、直前になって空室を埋めるための「直前割（値引き）」に頼らざるを得なくなってしまう。</p>
+    <p>ネット販売においては、プランはできるだけシンプルに見せることが重要である。無駄なプランを削ぎ落とし、部屋タイプとの掛け合わせや「早割」などの仕組みを有効活用することで、多様なニーズにスマートに応える。</p>
   </div>
 
   <div class="subsection">
-    <h3><span class="num">2</span> データドリブンな改善サイクル</h3>
-    <p>データを取るだけでは意味がない。収集したデータを分析し、仮説を立て、施策を実行し、結果を検証するサイクルを確立することが重要である。週次ベースでのデータ確認と月次ベースでの戦略見直しが推奨される。</p>
+    <h3><span class="num coral">1</span> 私たちの考え方とアプローチ</h3>
+    <p><strong>早割を原動力にしつつ、「直前割」に頼らない間際予約の獲得</strong></p>
+    <p>3ヶ月〜半年前から計画的に動く優良な顧客層に対しては「早割」をしっかりときかせて早期に客室のベース（土台）を埋め、経営の安定を図る。その上で、ブッキングカーブに沿って間際の部屋を埋めていく際、私たちが最も重要視するセオリーは、「安易な直前割（値引き）をいかになくしつつ、リードタイムの短い（間際の）予約をいかに適正単価で取り切るか」である。</p>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num coral">2</span> 具体的な施策</h3>
+    <p><strong>「ジャムの法則」に基づいたプランの間引きと、間際客専用のシンプル導線</strong></p>
+    <p>選択肢を24種類から6種類に絞っただけで売上が約7倍になったという行動経済学の「ジャムの法則」をウェブ販売に適用する。</p>
     <ul>
-      <li>週次チェック：予約数・キャンセル数・稼働率の前週比を確認し、異常値があれば即座に原因を調査する</li>
-      <li>月次分析：OTA別のADR・RevPARを比較し、リソース配分の見直しを行う。掲載継続・強化・縮小の判断をする</li>
-      <li>季節変動の把握：前年同月比とトレンドを比較し、需要予測の精度を高める</li>
-      <li>OTA間比較：同一期間のOTA別パフォーマンスを横並びで比較し、注力すべきチャネルを特定する</li>
+      <li class="coral"><strong>ターゲットの徹底絞り込み：</strong>お宿様の強み・特徴を隅々まで調べ上げ、強化すべきターゲット層を明確に選定（絞り込み）する。ニーズに応える名目で乱立する不要なプランを徹底的に「間引き」する。</li>
+      <li class="coral"><strong>直前の「迷わせない」プラン構成：</strong>予約までのリードタイムが短い間際のユーザーは、じっくりプランを比較する時間がない。直前になればなるほど、ユーザーが迷わずにパッと判断できる、徹底的にシンプルで強力な「プラン構成・部屋タイプ構成」へと画面を整理する。</li>
+      <li class="coral"><strong>OTAプロモーションの適正化：</strong>プランの整理と同時に、各OTA（じゃらん、楽天、一休など）で「なんとなく参加し続けていた無駄な値引きプロモーション」を洗い出し、適正化する。お宿様のブランドを毀損するような一律の割引キャンペーンへの参加をやめ、狙ったターゲットの露出を上げるために本当に効果のあるプロモーションだけを厳選して組み合わせる。</li>
     </ul>
+    <p>これらにより、直前割という「価格を下げる魅力」に頼るのではない、「選びやすさ・わかりやすさ・露出の最適化」という総合的なウェブ戦略の力で、間際の高単価な予約を確実に勝ち取る。</p>
   </div>
 
-  <div class="subsection">
-    <h3><span class="num">3</span> RevPAR分析による収益構造の理解</h3>
-    <p>RevPAR（Revenue Per Available Room）は宿泊業界における最重要指標のひとつである。RevPARを「平均客単価」と「稼働率」に分解して分析することで、収益改善の具体的な打ち手が見えてくる。</p>
-    <ul>
-      <li>ADRが低いのに稼働率が高い：価格に余力がある可能性。値上げを検討する</li>
-      <li>ADRは高いが稼働率が低い：認知度・魅力度の問題。写真やプラン内容の見直しが必要</li>
-      <li>両方低い：市場ポジションそのものの再検討が必要。ターゲットの見直しから検討する</li>
-    </ul>
-  </div>
-
-  <div class="highlight-box warn">
-    <h4>注意点</h4>
-    <p>OTAの管理画面から取得できるデータはOTAごとにフォーマットが異なる。横断的な比較を行うためには、データを統一フォーマットに整形して管理する仕組みが必要である。ExcelやGoogleスプレッドシートでの管理でも十分だが、可能であればPMS（ホテル管理システム）との連携を検討すべきである。</p>
+  <div class="callout coral">
+    <h4>プラン整理の判断基準</h4>
+    <p>既存プランを整理する際は以下の3つの質問で判断する：(1) このプランは直近3ヶ月で予約実績があるか？ (2) このプランがなくなることで取りこぼす需要はどれくらいか？ (3) このプランの代わりに、既存の別プランで代用可能か？ この3つで「明確なYes」が得られないプランは削除対象とする。私たちの経験上、多くの施設で掲載プランの30〜50%がこの基準で削減可能である。</p>
   </div>
 </section>
 
-<!-- Section 5 -->
+<!-- ============================================================ -->
+<!-- PART 2: OTA活用ハンドブック -->
+<!-- ============================================================ -->
+
 <section id="s5">
-  <span class="section-number">CHAPTER 05</span>
-  <h2>自社集客・直販強化</h2>
-  <p class="lead">OTAに過度に依存した経営は、手数料負担の増大と顧客データの不在というリスクを生む。中長期的には自社チャネル（直販）の強化が不可欠であり、そのためにはOTAとの適切な関係性を保ちながら、段階的に自社集客基盤を構築していく必要がある。</p>
+  <span class="section-number part2">05 &nbsp; OTA</span>
+  <h2>OTAの基本と選定</h2>
+  <p class="section-desc">Online Travel Agentのビジネスモデルを理解し、自施設に最適なチャネルミックスを設計する。</p>
+  <div class="divider"></div>
 
   <div class="subsection">
-    <h3><span class="num">1</span> なぜ自社直販が重要なのか</h3>
-    <p>OTA経由の予約が増えれば増えるほど、施設は顧客との直接的な関係を築く機会を失う。OTAは顧客データを共有しないため、リピーター施策やターゲティングが困難になる。また手数料率の変更や掲載ルールの改定など、OTA側の都合で収益が左右されるリスクも存在する。</p>
-    <p>理想的な状態は「OTAと直販のバランスが取れている」ことである。OTAを集客の入口として活用しながら、いかに自社サイトへの直接予約を増やすかが、中長期的な経営課題となる。</p>
-  </div>
-
-  <div class="subsection">
-    <h3><span class="num">2</span> 直販強化のための具体的施策</h3>
-    <p>直販比率を高めるためには、自社サイトに「OTAにはない価値」を実装する必要がある。価格面でOTAに勝とうとするのは得策ではなく、むしろ特典や体験で差別化する。</p>
-    <ul>
-      <li>多言語対応：自社サイトの英語・中国語・韓国語対応はインバウンド直販の第一歩。最低限、予約フローと施設情報は翻訳する</li>
-      <li>特別プランの提供：直販限定の特典（レイトチェックアウト・ウェルカムドリンク・送迎サービスなど）を設定する</li>
-      <li>予約体験の最適化：モバイル対応、決済の多様化（Apple Pay・支付宝・WeChat Pay）、ページ表示速度の改善を行う</li>
-      <li>Google My Businessの最適化：Google検索・Googleマップからの流入を増やす。口コミ対応と写真の定期的な更新が効果的</li>
-      <li>SNS活用：Instagram・TikTokでのビジュアル発信がインバウンド需要に直結する。ハッシュタグ戦略と定期的な投稿が重要</li>
-    </ul>
+    <h3><span class="num teal">1</span> OTAのビジネスモデルと構造的理解</h3>
+    <p>OTA（Online Travel Agent）は、宿泊施設と旅行者をオンラインで結ぶ予約仲介プラットフォームである。宿泊施設はOTAに手数料を支払う代わりに、自社では獲得困難な広範な集客チャネルと予約管理システム（管理画面・カレンダー管理・決済代行など）を利用できる。この「成果報酬型」のモデルは、固定費をかけずに集客規模を拡大できるメリットがある半面、手数料負担が収益を圧迫する構造的なジレンマも内包している。</p>
+    <p>OTAの手数料は「公開手数料」と「実質手数料」に分けて考える必要がある。公開手数料は契約上のレート（国内OTAで10〜15%、海外OTAで15〜25%）だが、実質手数料はこれにプロモーション参加費・掲載順位向上のための追加費用・クーポン負担などが加わり、実際には公開手数料より2〜5%高い水準になることが多い。この実質手数料を正確に把握している施設は意外に少ない。</p>
   </div>
 
   <div class="subsection">
-    <h3><span class="num">3</span> OTAから直販への誘導戦略</h3>
-    <p>OTAゲストを直接自社サイトに誘導することは契約上禁止されているが、以下の方法で自然な形でのリピーター化を促進できる。</p>
-    <ul>
-      <li>宿泊中の接客で直接予約のメリットを伝える：次回予約時の割引や特典を案内するカードを客室に置く</li>
-      <li>メールマガジン・LINE公式アカウントでの関係構築：チェックイン時に任意登録を促し、季節のプラン情報を配信する</li>
-      <li>SNSフォローによるリピーター化：施設のSNSアカウントを案内し、フォロワー限定の特別プランを告知する</li>
-    </ul>
-  </div>
-
-  <div class="highlight-box success">
-    <h4>バランスの目標</h4>
-    <p>当社としては、OTA比率70%・直販比率30%をひとつの目安として提案する。この比率を達成するには、OTAの運用精度を高めながら、並行して自社チャネルの強化を進める必要がある。短期的な予約数だけを見ればOTAが圧倒的だが、中長期的な収益構造の安定化には直販強化が不可欠である。</p>
-  </div>
-</section>
-
-<!-- Section 6 -->
-<section id="s6">
-  <span class="section-number">CHAPTER 06</span>
-  <h2>宿泊プラン設計・収益最大化</h2>
-  <p class="lead">同じ客室を販売するにしても、プランの設計次第で客単価は大きく変わる。OTA上で効果的なプランを設計し、ダイナミックプライシングを導入することで、収益を最大化する方法を整理する。</p>
-
-  <div class="subsection">
-    <h3><span class="num">1</span> 基本プラン設計の考え方</h3>
-    <p>プラン設計の基本は「選択肢を絞り、それぞれの価値を明確にする」ことである。多すぎるプランは管理コストが増えるだけでなく、旅行者の選択疲れを引き起こす。推奨するのは以下の3段階構成である。</p>
-    <ul>
-      <li>ベースプラン（素泊まり）：最低価格を打ち出し、検索流入を獲得する役割</li>
-      <li>スタンダードプラン（朝食付き）：最も多くの予約を見込む主力プラン</li>
-      <li>プレミアムプラン（夕食付きまたは体験付き）：高単価客向けの差別化プラン</li>
-    </ul>
-    <p>この3段階を基本とし、必要に応じて季節限定プランや連泊割引プランを追加する。総プラン数は5つ以内に抑えるのが管理効率と視認性の両面で最適である。</p>
-  </div>
-
-  <div class="subsection">
-    <h3><span class="num">2</span> ダイナミックプライシングの導入</h3>
-    <p>需要に応じて価格を変動させるダイナミックプライシングは、収益最大化のための最も有効な手法のひとつである。以下の要素を考慮して価格を設定する。</p>
-    <ul>
-      <li>曜日変動：平日と週末で価格差を設定する。需要の高い曜日は高めに、低い曜日は割引で需要創出する</li>
-      <li>季節変動：繁忙期（桜・紅葉・夏休み・年末年始）と閑散期で大幅に価格を変える</li>
-      <li>イベント連動：周辺で開催されるイベント・フェスティバル・学会などに連動した価格設定を行う</li>
-      <li>リードタイム：直前予約は割引、早期予約はやや高めの設定が一般的。ただし閑散期は直前割引も検討する</li>
-    </ul>
-  </div>
-
-  <div class="subsection">
-    <h3><span class="num">3</span> 差別化と付加価値の設計</h3>
-    <p>価格競争に陥らないためには、プラン自体に差別化要素を組み込むことが重要である。OTA上では価格比較が容易なため、同じ内容なら安い方が選ばれる。差別化の方向性として以下のアプローチがある。</p>
-    <ul>
-      <li>体験型プラン：地元の文化体験・アクティビティ・料理教室などをパッケージ化する</li>
-      <li>時間価値の提供：アーリーチェックイン・レイトチェックアウト・ルームアップグレードなどの選択肢</li>
-      <li>ギフト・記念日向け：誕生日・記念日などの特別な用途に対応したプランは単価が上がりやすい</li>
-      <li>食事の差別化：地元食材を使った特別メニュー、シェフおまかせコースなど「ここでしか味わえない体験」を提供する</li>
-    </ul>
-  </div>
-
-  <div class="highlight-box info">
-    <h4>プラン名の重要性</h4>
-    <p>プラン名は旅行者の目に最初に触れる情報である。「【早期割】朝食付きスタンダードプラン」のような説明的な名前ではなく、「信州の恵みを味わう 地元食材満喫プラン」のように価値や体験を想起させる名前のほうがクリック率が高い。</p>
-  </div>
-</section>
-
-<!-- Section 7 -->
-<section id="s7">
-  <span class="section-number">CHAPTER 07</span>
-  <h2>診断アプローチ</h2>
-  <p class="lead">自社のOTA活用状況を客観的に評価し、改善すべき優先順位を特定するための診断フレームワークを以下にまとめる。定期的な自己診断によって、運用の質を持続的に向上させることができる。</p>
-
-  <div class="subsection">
-    <h3><span class="num">1</span> OTA運用 自己診断チェックリスト</h3>
-    <p>以下の観点で現在の運用状況を評価する。各項目を3段階（〇：できている、△：一部できている、×：できていない）で自己評価し、スコアの低い項目から優先的に対策を実施する。</p>
+    <h3><span class="num teal">2</span> 主要OTAの特性と選定基準</h3>
+    <p>OTA選定において最も重要なのは「自施設のターゲット客層とOTAの得意領域が一致しているか」である。国内外含めて10を超える主要OTAが存在するが、それぞれに明確な強みと弱みがある。</p>
     <div class="table-wrap">
       <table>
-        <tr><th>カテゴリ</th><th>チェック項目</th></tr>
-        <tr><td rowspan="3">掲載状況</td><td>ターゲット市場に適したOTAを選定できているか</td></tr>
-        <tr><td>掲載OTA数は管理可能な範囲（3〜7媒体）に収まっているか</td></tr>
-        <tr><td>各OTAの手数料率を把握し、定期的に見直しているか</td></tr>
-        <tr><td rowspan="3">写真・情報</td><td>全OTAで推奨サイズを満たす写真を掲載しているか</td></tr>
-        <tr><td>多言語での施設情報提供ができているか</td></tr>
-        <tr><td>写真の季節更新を定期的に行っているか</td></tr>
-        <tr><td rowspan="3">価格・プラン</td><td>曜日別・季節別の価格設定を行っているか</td></tr>
-        <tr><td>他OTAとレートパリティが維持できているか</td></tr>
-        <tr><td>自社サイト向けの特別プランを用意しているか</td></tr>
-        <tr><td rowspan="3">データ分析</td><td>週次で予約データを確認する習慣があるか</td></tr>
-        <tr><td>OTA別のADR・RevPARを比較分析しているか</td></tr>
-        <tr><td>データに基づいた改善施策を実行しているか</td></tr>
-        <tr><td rowspan="2">レビュー対応</td><td>全言語のレビューに返信しているか</td></tr>
-        <tr><td>ネガティブレビューに対して改善対応ができているか</td></tr>
+        <tr><th class="teal">カテゴリ</th><th class="teal">OTA名</th><th class="teal">強み・特性</th><th class="teal">手数料帯</th><th class="teal">こんな施設に最適</th></tr>
+        <tr><td rowspan="4">国内OTA</td><td>楽天トラベル</td><td>国内最大級の会員基盤、楽天ポイント連携、クーポン施策が充実</td><td>10〜15%</td><td>国内個人客がメインターゲットの施設</td></tr>
+        <tr><td>じゃらん</td><td>リクルート系列の圧倒的な認知度、宿泊＋体験の組み合わせ検索が可能</td><td>10〜15%</td><td>ファミリー層・カップル層を狙いたい施設</td></tr>
+        <tr><td>一休.com</td><td>高単価・高級宿泊施設に特化、ユーザーの質が高い</td><td>10〜12%</td><td>高級旅館・ブティックホテル</td></tr>
+        <tr><td>るるぶトラベル</td><td>JTBグループの信頼感、旅行雑誌との連携</td><td>10〜15%</td><td>中高年層・団体旅行向け施設</td></tr>
+        <tr><td rowspan="5">海外OTA</td><td>Booking.com</td><td>世界最大級、欧州客に絶大な強み、ジェニーレート（手頃な価格帯の優遇）あり</td><td>15〜18%</td><td>インバウンド比率を高めたいすべての施設</td></tr>
+        <tr><td>Expedia</td><td>北米・オセアニアに強く、航空券＋ホテルのパッケージ予約が強力</td><td>15〜25%</td><td>北米からの集客を強化したい施設</td></tr>
+        <tr><td>Agoda</td><td>アジア圏(タイ・韓国・シンガポール等)のユーザー基盤が厚い</td><td>15〜20%</td><td>アジアからのインバウンド需要を取り込みたい施設</td></tr>
+        <tr><td>Trip.com</td><td>中国最大手OTA、支付宝・WeChat連携、中国人観光客に必須</td><td>15〜20%</td><td>中国人観光客を主要ターゲットとする施設</td></tr>
+        <tr><td>Airbnb</td><td>長期滞在・ファミリー・体験重視の旅行者、民泊・一棟貸しに強い</td><td>3〜14%</td><td>独立したコテージ・一棟貸切・長期滞在プランがある施設</td></tr>
       </table>
     </div>
   </div>
 
   <div class="subsection">
-    <h3><span class="num">2</span> 優先順位の決定</h3>
-    <p>診断結果に基づき、以下の優先順位で改善を進める。すべてを同時に改善しようとせず、段階的にアプローチすることが長続きのコツである。</p>
-    <div class="highlight-box warn">
-      <h4>フェーズ1（即日〜1週間）</h4>
-      <p>写真のサイズ確認と明るさ補正、掲載プランの棚卸し、レートパリティの確認。これらは工数が少なく効果が出やすい。</p>
-    </div>
-    <div class="highlight-box info">
-      <h4>フェーズ2（1〜4週間）</h4>
-      <p>多言語対応の実施、レビュー返信のテンプレート整備、週次データ確認の習慣化。</p>
-    </div>
-    <div class="highlight-box success">
-      <h4>フェーズ3（1〜3ヶ月）</h4>
-      <p>ダイナミックプライシングの導入、自社サイトの多言語化・UI改善、SNS発信の本格化。</p>
+    <h3><span class="num teal">3</span> OTAポートフォリオ設計の実践フレームワーク</h3>
+    <p>理想的なOTAポートフォリオは「1つの軸に依存しない分散構造」を持つ。具体的には以下の3軸でバランスを取る。</p>
+    <ul>
+      <li class="teal"><strong>地域分散：</strong>国内OTA（日本人向け）と海外OTA（インバウンド向け）のバランス。インバウンド比率の目標に応じて配分を変える</li>
+      <li class="teal"><strong>単価分散：</strong>高単価客が多いOTAと、価格訴求型で稼働率を上げるOTAの組み合わせ。利益率と稼働率のトレードオフを最適化する</li>
+      <li class="teal"><strong>リードタイム分散：</strong>早期予約が多いOTA（Expedia系）と直前予約が多いOTA（Booking.comなど）の特性を活かした在庫管理</li>
+    </ul>
+    <p>初心者の施設には「国内2媒体＋海外2媒体」の4媒体構成を推奨する。経験を積みながら徐々に拡大し、管理体制が整った段階で7媒体程度まで増やすのが現実的である。一度に多くのOTAに掲載すると、レート管理・在庫管理・レビュー対応が追いつかず、かえって収益を損ねるリスクがある。</p>
+  </div>
+
+  <div class="callout teal">
+    <h4>掲載判断のチェックリスト</h4>
+    <p>新たなOTAへの掲載を検討する際は以下を確認する：(1) そのOTAのユーザー層は自施設のターゲットと一致するか (2) 手数料を差し引いても利益が出る価格設定が可能か (3) 現在の体制で管理画面の運用・問い合わせ対応が回るか (4) 他OTAとのレートパリティ契約に違反しないか。すべてYesなら掲載を前向きに検討する。</p>
+  </div>
+</section>
+
+<section id="s6">
+  <span class="section-number part2">06 &nbsp; OTA</span>
+  <h2>インバウンドOTA戦略</h2>
+  <p class="section-desc">海外OTAを活用したインバウンド集客の全体像と、実践的な運用ノウハウ。</p>
+  <div class="divider"></div>
+
+  <div class="subsection">
+    <h3><span class="num teal">1</span> インバウンドOTAの選定と市場別アプローチ</h3>
+    <p>インバウンドOTAの選定は「ターゲット国・地域を決めてから」が基本である。日本を訪れるインバウンド旅行者の出身地域は年々多様化しているが、主要市場は以下のように分類できる。</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th class="teal">市場</th><th class="teal">主要OTA</th><th class="teal">旅行者特性</th><th class="teal">成功のカギ</th></tr>
+        <tr><td>欧州（英国・仏・独・伊・西）</td><td>Booking.com</td><td>長期滞在傾向、文化体験重視、環境意識が高い</td><td>サステナビリティ情報の明示、エコ施策のアピール</td></tr>
+        <tr><td>北米（米・加）</td><td>Expedia / Booking.com</td><td>短期集中型、支払い意思額が高い、レビューを徹底的に読む</td><td>詳細なレビューへの英語返信、ハイクオリティな写真</td></tr>
+        <tr><td>中国</td><td>Trip.com / Ctrip</td><td>モバイル決済前提（支付宝・WeChat Pay）、口コミ文化が強い</td><td>中国語対応、モバイル決済対応、WeChat公式アカウント運用</td></tr>
+        <tr><td>韓国</td><td>Agoda / ヤノルジャ</td><td>短期・頻繁な訪問、SNS映え重視、食べ歩き需要</td><td>インスタグラム向け写真、韓国語メニュー・案内</td></tr>
+        <tr><td>東南アジア（タイ・シンガポール・マレーシア）</td><td>Agoda / Booking.com</td><td>家族連れが多い、コストパフォーマンス重視</td><td>ファミリープラン、朝食付きのわかりやすい価格表示</td></tr>
+        <tr><td>オーストラリア・NZ</td><td>Expedia / Booking.com</td><td>長期滞在・アクティビティ重視、自然体験志向</td><td>周辺アクティビティ情報の充実、連泊割引の設定</td></tr>
+      </table>
     </div>
   </div>
 
   <div class="subsection">
-    <h3><span class="num">3</span> 継続的な改善サイクル</h3>
-    <p>OTA運用に終わりはない。一度改善したら終了ではなく、以下のサイクルを定期的に回すことで持続的な成長が可能になる。</p>
+    <h3><span class="num teal">2</span> 海外OTA運用の実務ポイント</h3>
+    <p>海外OTAの運用には国内OTAとは異なるノウハウが必要である。特に以下の5点は運用開始前に必ず理解しておく。</p>
     <ul>
-      <li>四半期ごとに診断チェックリストを再実施し、スコアの変化を確認する</li>
-      <li>月次でOTA別のKPIダッシュボードを更新し、トレンドの変化を捉える</li>
-      <li>半年に一度、OTAポートフォリオそのものの見直しを行う（新規OTAの評価・既存OTAの継続判断）</li>
-      <li>年次で競合分析を実施し、市場ポジションの変化を確認する</li>
+      <li class="teal"><strong>多言語対応の優先順位：</strong>英語・中国語（簡体字）・韓国語の3言語対応が最低限求められる。費用対効果を考慮し、まずは施設概要・プラン名・主要アメニティ情報から翻訳を進める。機械翻訳＋ネイティブチェックの組み合わせが効率的である</li>
+      <li class="teal"><strong>キャンセルポリシー設計：</strong>海外OTAは国内OTAより柔軟なキャンセルポリシーを標準とする傾向がある。無料キャンセル期間を設定することで予約率が向上する一方、直近キャンセルが増えるリスクもある。当社は「無料キャンセルは宿泊3日前まで、その後は宿泊料金の50%」を初期設定の推奨値としている</li>
+      <li class="teal"><strong>レビュー対応の国際基準：</strong>Booking.comやExpediaでは、レビューへの返信率が検索順位に影響するというデータがある。ネガティブレビューには「謝罪＋具体的な改善策＋丁寧な英語」の3点セットで返信する。ポジティブレビューにも感謝の返信を忘れずに</li>
+      <li class="teal"><strong>価格設定と為替リスク：</strong>海外OTAでは現地通貨建てで価格表示されることが多い。為替変動による実質的な値下がりを防ぐため、定期的な価格見直しのサイクル（月1回推奨）を設定する。また、各OTAの「オープンプライス（需要連動型価格設定）」機能を活用し、需要に応じた自動調整も検討する</li>
+      <li class="teal"><strong>決済手段の多様化：</strong>中国からの予約には支付宝・WeChat Payへの対応がほぼ必須である。PayPayなどの日本独自決済はインバウンドには浸透していない点に注意が必要である</li>
     </ul>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num teal">3</span> インバウンドOTAの効果測定とPDCA</h3>
+    <p>インバウンドOTAの効果は「予約数」だけで評価してはいけない。重要なのは「国籍別・チャネル別の収益貢献度」である。例えば、同じ10室の予約でも、Booking.com経由の欧州客（長期滞在・高単価）とAgoda経由のアジア客（短期・価格重視）では、施設への貢献度が根本的に異なる。</p>
+    <ul>
+      <li class="teal">国籍別の平均滞在日数と客単価をトラッキングし、OTAごとに「収益効率」を算出する</li>
+      <li class="teal">月次でOTA別のRevPAR（平均客単価×稼働率）を比較し、リソース配分を最適化する</li>
+      <li class="teal">四半期ごとにインバウンド市場のトレンドを確認し、注力するOTAの見直しを行う</li>
+      <li class="teal">特定国籍の予約が急増した場合、その国の言語対応・習慣対応が追いついているか監査する</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s7">
+  <span class="section-number part2">07 &nbsp; OTA</span>
+  <h2>画像・写真戦略</h2>
+  <p class="section-desc">予約率に最も直接的な影響を与える写真。費用対効果の高い改善領域として、戦略的に取り組む。</p>
+  <div class="divider"></div>
+
+  <div class="subsection">
+    <h3><span class="num teal">1</span> 写真が予約率に与える影響の定量データ</h3>
+    <p>各種調査によれば、旅行者の80%以上が写真を予約の最重要判断材料としている。また、OTAのABテストにおいて、写真の質を改善することで予約転換率が20〜30%向上した事例が複数報告されている。写真は「撮影コストは1回限り、効果は継続的」という点で、最も費用対効果の高い投資のひとつである。</p>
+    <p>特に重要なのは「ファーストビュー」（1枚目）の写真である。検索結果一覧や施設トップページに表示されるこの1枚で「泊まりたい」と思わせられなければ、2枚目以降を見られることなく離脱される。OTAのデータによれば、施設詳細ページへの遷移率は1枚目の写真で大きく左右され、特にスマートフォンユーザーは表示される写真の数が限られるため、この傾向が顕著である。</p>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num teal">2</span> OTA別 推奨画像サイズ完全対応表</h3>
+    <p>各OTAが推奨する画像サイズは異なる。共通の画像で使い回すのではなく、各OTAの仕様に合わせた最適化が求められる。特にアスペクト比の違いに注意が必要で、無理なトリミングをすると重要な要素が欠ける原因になる。</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th class="teal">OTA</th><th class="teal">推奨サイズ</th><th class="teal">アスペクト比</th><th class="teal">最大ファイル</th><th class="teal">推奨フォーマット</th><th class="teal">注意点</th></tr>
+        <tr><td>楽天トラベル</td><td>1920×1080px以上</td><td>16:9</td><td>5MB</td><td>JPEG</td><td>横長推奨、縦写真はトリミングされる</td></tr>
+        <tr><td>じゃらん</td><td>1920×1280px以上</td><td>3:2</td><td>5MB</td><td>JPEG</td><td>料理写真は別サイズ指定あり</td></tr>
+        <tr><td>一休.com</td><td>1200×900px以上</td><td>4:3</td><td>3MB</td><td>JPEG</td><td>高級感のある色調が好まれる</td></tr>
+        <tr><td>Booking.com</td><td>2048×1536px以上</td><td>4:3</td><td>10MB</td><td>JPEG/PNG</td><td>最大10MBだが5MB以下推奨</td></tr>
+        <tr><td>Expedia</td><td>1920×1080px以上</td><td>16:9</td><td>5MB</td><td>JPEG</td><td>明るさ補正が自動でかかる場合あり</td></tr>
+        <tr><td>Agoda</td><td>2048×1536px以上</td><td>4:3</td><td>5MB</td><td>JPEG</td><td>正方形にトリミングされる箇所もあるので中央配置が無難</td></tr>
+        <tr><td>Trip.com</td><td>1920×1080px以上</td><td>16:9</td><td>5MB</td><td>JPEG</td><td>中国ユーザー向けに「派手すぎない」色調が良い</td></tr>
+        <tr><td>Airbnb</td><td>1920×1080px以上</td><td>16:9</td><td>10MB</td><td>JPEG/PNG</td><td>「住まい」感が出るライフスタイル写真が好まれる</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num teal">3</span> 効果的な写真構成と撮影ガイドライン</h3>
+    <p>単に「写真を載せる」だけでは不十分である。旅行者の購買心理を考慮した「写真構成」と、施設の魅力を最大限に引き出す「撮影ガイドライン」に従うことで、写真の効果を最大化できる。</p>
+    <ul>
+      <li class="teal"><strong>撮影すべき写真の優先順位：</strong>(1) 施設外観・エントランス (2) 客室内（ベッド全体が写るアングル） (3) バスルーム（清潔感が最も重要） (4) レストラン・朝食会場 (5) 料理 (6) 温泉・大浴場 (7) 周辺景観・アクティビティ (8) スタッフの接客風景。最低でもこの8カテゴリは押さえる</li>
+      <li class="teal"><strong>1枚に込めるべき情報量：</strong>「広さ」「清潔感」「採光」「眺望」の4要素がひと目で伝わる構図が理想的。極端な広角レンズは実際より広く見せすぎてクレームの原因になるため注意する</li>
+      <li class="teal"><strong>人物の効果的な配置：</strong>人が写っている写真のほうが親しみやすく予約転換率が高いというデータがある。ただし、モデルが不自然にポーズを取っている写真より、自然な笑顔で接客している瞬間のほうが効果的である</li>
+      <li class="teal"><strong>季節更新のサイクル：</strong>年4回（春夏秋冬）の写真更新が理想的。最低でも年2回（夏と冬）は更新し、リピーターに新鮮な印象を与える。桜・紅葉・雪景色など季節のハイライトは必ず撮影する</li>
+    </ul>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num teal">4</span> 写真改善の実践フレームワーク</h3>
+    <p>写真改善を効果的に進めるための4ステッププロセスを以下に示す。</p>
+    <ul>
+      <li class="teal"><strong>ステップ1：棚卸しと診断</strong>—現在掲載中の全写真をOTAごとに収集し、サイズ・明るさ・構図・清潔感の4軸で評価する。特に「暗い」「手前のもの」「生活感がある」写真は即交換対象とする</li>
+      <li class="teal"><strong>ステップ2：優先順位付け</strong>—「最も予約数が多い客室」から優先的に改善する。全体の20%の客室写真を改善すれば、効果の80%を得られるパレートの法則がここでも適用できる</li>
+      <li class="teal"><strong>ステップ3：撮影・加工</strong>—プロカメラマンによる撮影が理想的だが、予算が限られている場合でもスマートフォンで以下の点を押さえれば一定の品質は確保できる：自然光を活かす、水平線を合わせる、余計な物を片付ける、露出補正を行う</li>
+      <li class="teal"><strong>ステップ4：ABテスト</strong>—改善した写真をOTAにアップロードし、2週間〜1ヶ月単位でクリック率・転換率の変化を測定する。効果が確認できたものから順次、他のOTAにも展開する</li>
+    </ul>
+  </div>
+
+  <div class="callout gold">
+    <h4>費用対効果の試算</h4>
+    <p>プロカメラマンによる撮影費用は1施設あたり15〜30万円（撮影40〜60カット＋レタッチ込み）が相場である。もし写真改善によって予約転換率が20%向上し、既存のOTA経由予約が月50室で平均単価が2万円の場合、月間売上は20万円増加する。投資回収期間は1〜2ヶ月であり、極めて合理的な投資といえる。</p>
+  </div>
+</section>
+
+<section id="s8">
+  <span class="section-number part2">08 &nbsp; OTA</span>
+  <h2>データ分析と効果測定</h2>
+  <p class="section-desc">勘と経験に頼った運用から、KPIに基づくPDCAサイクルへ。データドリブンな運用で確実な収益向上を実現する。</p>
+  <div class="divider"></div>
+
+  <div class="subsection">
+    <h3><span class="num teal">1</span> 基本KPIの定義と算出方法</h3>
+    <p>OTA運用の効果を正しく測定するためには、適切なKPIを設定し、定期的に計測する習慣が不可欠である。以下の5つのKPIは最低限トラッキングする。</p>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">露出数 (Impressions)</div>
+        <div class="kpi-kv">インプレッション</div>
+        <div class="kpi-desc">施設が検索結果に表示された回数。露出が少ない＝検索上位に表示されていない可能性</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">CTR</div>
+        <div class="kpi-kv">クリック率</div>
+        <div class="kpi-desc">露出されたうち実際にクリックされた割合。低い場合は写真・価格・施設名に課題</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">CVR</div>
+        <div class="kpi-kv">予約転換率</div>
+        <div class="kpi-desc">クリックされたうち実際に予約された割合。低い場合はプラン内容・価格に課題</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">ADR</div>
+        <div class="kpi-kv">平均客単価</div>
+        <div class="kpi-desc">1室あたりの平均販売価格。値引きのしすぎや高単価プランの訴求不足を示す</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">RevPAR</div>
+        <div class="kpi-kv">客室収益効率</div>
+        <div class="kpi-desc">ADR × 稼働率。収益効率の総合指標で、この数値の向上が最終目標となる</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Cancel Rate</div>
+        <div class="kpi-kv">キャンセル率</div>
+        <div class="kpi-desc">予約がキャンセルされる割合。高い場合はキャンセルポリシー・価格設定に問題の可能性</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num teal">2</span> RevPAR分解分析による収益構造の理解</h3>
+    <p>RevPAR（Revenue Per Available Room）は宿泊業界の最重要指標である。RevPARを構成する2つの要素に分解して分析することで、収益改善の具体的な打ち手が見えてくる。以下のマトリクスで自施設の状態を診断する。</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th class="teal">状態</th><th class="teal">ADR</th><th class="teal">稼働率</th><th class="teal">RevPAR</th><th class="teal">診断と対策</th></tr>
+        <tr><td>理想型</td><td>高い</td><td>高い</td><td>最高</td><td>現状維持＋さらなる単価アップを模索</td></tr>
+        <tr><td>割引依存型</td><td>低い</td><td>高い</td><td>中程度</td><td>価格に余力あり。段階的な値上げと価格訴求以外の強みを構築</td></tr>
+        <tr><td>高嶺の花型</td><td>高い</td><td>低い</td><td>低い</td><td>価格と価値のミスマッチ。写真・プラン・ターゲットの見直しが必要</td></tr>
+        <tr><td>低迷型</td><td>低い</td><td>低い</td><td>最低</td><td>根本的な戦略見直し。ターゲット・ポジショニングから再検討</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num teal">3</span> OTA横断ダッシュボードの構築</h3>
+    <p>各OTAの管理画面から個別にデータを取得するのは非効率である。複数のOTAデータを一元管理するダッシュボードを構築することで、チャネル比較やトレンド分析が容易になる。推奨するデータ取得項目と管理フォーマットは以下の通り。</p>
+    <ul>
+      <li class="teal"><strong>日次取得項目：</strong>予約数、キャンセル数、売上金額、稼働率—これらは全OTAで共通のフォーマットで記録する</li>
+      <li class="teal"><strong>週次分析項目：</strong>OTA別予約数、OTA別ADR、OTA別キャンセル率—前週比・前年同週比を必ず計算する</li>
+      <li class="teal"><strong>月次戦略項目：</strong>OTA別RevPAR、国籍別予約割合、プラン別予約数—戦略的な意思決定に用いる</li>
+    </ul>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num teal">4</span> データに基づく改善サイクルの実践</h3>
+    <p>データの収集だけでは意味がない。収集→分析→仮説→施策→検証のサイクルを確立し、継続的に回すことが重要である。以下に具体的なサイクルを示す。</p>
+    <ul>
+      <li class="teal"><strong>週次レビュー（毎週月曜・15分）：</strong>前週の予約数・キャンセル数・稼働率を確認し、異常値があれば原因を調査する。特に前年同週比が±20%を超えた場合は、外部要因（イベント・天候・競合の動き）を確認する</li>
+      <li class="teal"><strong>月次レビュー（毎月初・30分）：</strong>OTA別のADR・RevPARを比較し、リソース配分の妥当性を検証する。3ヶ月連続でパフォーマンスが低下しているOTAは、改善策を打つか撤退を検討する</li>
+      <li class="teal"><strong>四半期レビュー（60分）：</strong>インバウンド市場のトレンド確認、競合の動向調査、OTAポートフォリオそのものの見直しを行う。このタイミングで新規OTAの評価も行う</li>
+      <li class="teal"><strong>年次戦略見直し（ハーフデイ）：</strong>年間の収益実績を総括し、翌年のチャネル戦略・価格戦略・ターゲット戦略を策定する。過去3年のデータを比較し、中長期的なトレンドを把握する</li>
+    </ul>
+  </div>
+
+  <div class="callout coral">
+    <h4>おすすめツール構成</h4>
+    <p>Googleスプレッドシートを活用した簡易ダッシュボードが最も導入しやすい。各OTAの管理画面からCSVエクスポートしたデータを、QUERY関数やピボットテーブルで集計する。予算とリソースに余裕があれば、BIツール（Looker Studioなど）とPMSのAPI連携による自動化も検討する。ただし、ツールを導入することが目的化しないよう注意が必要である。</p>
+  </div>
+</section>
+
+<section id="s9">
+  <span class="section-number part2">09 &nbsp; OTA</span>
+  <h2>自社集客・直販強化</h2>
+  <p class="section-desc">OTAに依存しすぎない経営を実現するための、自社チャネル構築と運用力の向上。</p>
+  <div class="divider"></div>
+
+  <div class="subsection">
+    <h3><span class="num teal">1</span> OTA依存のリスクと直販強化の必要性</h3>
+    <p>OTA経由の予約比率が高まるほど、施設は顧客との直接的な関係を築く機会を失う。OTAは予約者情報（メールアドレス・電話番号・来訪履歴）を施設と共有しないため、リピーター施策やダイレクトマーケティングが困難になる。また、手数料率の改定（値上げ）、掲載ルールの変更、検索アルゴリズムのアップデートなど、OTA側の都合で収益が左右される構造的なリスクを抱えることになる。</p>
+    <p>理想的な状態はOTAと直販のバランスが取れている状態である。具体的な目標数値としては、OTA比率70%・直販比率30%をひとつの目安として提案する。この比率の達成には、OTAの運用精度を高めつつ、並行して自社チャネルの強化を進める必要がある。短期的にはOTAの集客力に依存せざるを得ないが、中長期的には直販比率を高めることで収益構造の安定化を図る。</p>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num teal">2</span> 自社サイト予約導線の最適化</h3>
+    <p>自社サイトにアクセスがあったユーザーを確実に予約につなげるためには、OTAにはない「直接予約のメリット」を明確に打ち出す必要がある。価格面でOTAに勝とうとするのは持続可能な戦略とは言えず、むしろ特典や体験で差別化する。</p>
+    <ul>
+      <li class="teal"><strong>直販限定特典の設計：</strong>レイトチェックアウト（12時〜13時）、ウェルカムドリンク、部屋アップグレード（空室がある場合）、送迎サービスなど、原価が低く知覚価値の高い特典を組み合わせる</li>
+      <li class="teal"><strong>予約体験の最適化：</strong>スマートフォンでの操作感を最優先する。予約までのクリック数を最小化し、ゲスト情報入力の負荷を軽減する（Googleアカウント・Apple IDでのログイン連携など）</li>
+      <li class="teal"><strong>決済手段の拡充：</strong>クレジットカードに加え、Apple Pay・Google Pay・支付宝・WeChat Payに対応する。予約完了後の即時決済はキャンセル防止にも効果的である</li>
+      <li class="teal"><strong>ページ表示速度の改善：</strong>Googleの調査によれば、モバイルサイトの表示速度が1秒遅くなるごとに予約転換率は20%低下する。画像の最適化・不要なスクリプトの削除・CDNの活用で対応する</li>
+    </ul>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num teal">3</span> 多言語対応の優先順位と実装方法</h3>
+    <p>インバウンド直販の第一歩は自社サイトの多言語化である。すべてのページを完璧に翻訳しようとするとコストが膨大になるため、優先順位を明確にして段階的に進める。</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th class="teal">フェーズ</th><th class="teal">対象</th><th class="teal">言語</th><th class="teal">方法</th><th class="teal">想定コスト</th></tr>
+        <tr><td>Phase 1</td><td>施設概要・客室説明・予約フォーム</td><td>英語のみ</td><td>機械翻訳＋簡易チェック</td><td>5〜10万円</td></tr>
+        <tr><td>Phase 2</td><td>プラン詳細・館内案内・よくある質問</td><td>英・中（簡体字）</td><td>専門翻訳者による翻訳</td><td>15〜25万円</td></tr>
+        <tr><td>Phase 3</td><td>ブログ・周辺情報・全ての静的ページ</td><td>英・中・韓</td><td>翻訳会社による本格対応</td><td>30〜50万円</td></tr>
+        <tr><td>Phase 4</td><td>SNS・メルマガ・動画コンテンツ</td><td>英・中・韓・その他</td><td>ネイティブスタッフor 制作会社</td><td>月額5〜15万円</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num teal">4</span> 検索・SNSからの自社集客</h3>
+    <p>自社サイトへの流入経路として最も重要なのは検索エンジン（Google）とSNS（Instagram・TikTok）である。それぞれに適した対策を講じることで、継続的な集客が可能になる。</p>
+    <ul>
+      <li class="teal"><strong>Google My Businessの最適化：</strong>Google検索とGoogleマップからの集客は直販の中でも最も費用対効果が高い。施設情報の完全入力、写真の定期更新（週1回推奨）、口コミへの返信（全件対応）、Google投稿機能の活用を行う。GMBからの予約導線を設定することで、OTAを介さない直接予約を促進できる</li>
+      <li class="teal"><strong>Instagram戦略：</strong>視覚的な訴求が重要な宿泊施設にとって、Instagramは最も重要なSNSチャネルである。投稿頻度は週3回以上、ハッシュタグは20〜30個を適切に組み合わせる。リール動画（15〜30秒）の活用が現在のアルゴリズム上最も有効である。インフルエンサー招聘による施設体験投稿も効果的な投資となる</li>
+      <li class="teal"><strong>TikTok戦略：</strong>インバウンドへのリーチという観点ではTikTokの影響力が急成長している。特にアジア圏の若年層へのリーチに有効で、「#japan #japantravel #hiddengem」などのハッシュタグがよく使われる。TikTokはあまり加工しすぎない「生感」のある動画が好まれる傾向がある</li>
+      <li class="teal"><strong>Google SEOの基本：</strong>施設名＋地域名での検索上位表示を目指す。構造化データ（schema.org/ Hotel）の実装、被リンクの獲得（旅行メディアへの掲載や口コミサイトとの連携）、ページタイトルとmeta descriptionの最適化が基本である</li>
+    </ul>
+  </div>
+
+  <div class="callout teal">
+    <h4>OTAから直販への段階的誘導</h4>
+    <p>OTAゲストを直接自社サイトに「今すぐ」誘導する行為は契約違反となる可能性がある。しかし、宿泊中の接客を通じて次回予約のメリットを伝えることや、客室に置くカードで公式サイトを案内することは問題ない。私たちは「OTAは初回予約の入口」と割り切り、宿泊体験の質を高めることで自然なリピーター化を促進する戦略を推奨する。</p>
+  </div>
+</section>
+
+<section id="s10">
+  <span class="section-number part2">10 &nbsp; OTA</span>
+  <h2>宿泊プラン設計と収益最大化</h2>
+  <p class="section-desc">「何を売るか」の設計次第で収益は大きく変わる。行動経済学とデータに基づいたプラン設計の実践。</p>
+  <div class="divider"></div>
+
+  <div class="subsection">
+    <h3><span class="num teal">1</span> 行動経済学に基づくプラン設計の原理</h3>
+    <p>プラン設計において最も重要なのは「選択のアーキテクチャ」、すなわちユーザーにどのように選択肢を提示するかの設計である。行動経済学の知見に基づけば、多すぎる選択肢はユーザーの意思決定を妨げる（ジャムの法則）一方、適切に設計された3〜5の選択肢は購入確率を最大化できる。</p>
+    <ul>
+      <li class="teal"><strong>アンカリング効果：</strong>最も高額なプランを最初に提示することで、その後のプランが相対的に「お得」に見える効果を活用する。例えば「プレミアムプラン 5万円 → スタンダードプラン 3万円 → ベーシックプラン 2万円」の順で提示する</li>
+      <li class="teal"><strong>デコイ効果：</strong>意図的に「選ばせたくない選択肢」を配置することで、ターゲットとするプランの相対的な魅力を高める。例えばベーシック（2万円）とプレミアム（5万円）の中間に、あえて割高感のあるミドルプラン（3.5万円）を配置する</li>
+      <li class="teal"><strong>損失回避バイアス：</strong>「このプランは残り3室です」「本日までの特別価格です」など、希少性や期限を明示することで、ユーザーの「逃したくない」という心理に働きかける</li>
+    </ul>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num teal">2</span> セグメント別プラン設計の実践</h3>
+    <p>ターゲットとする顧客セグメントごとに、最適なプラン構成は異なる。以下のセグメント別のプラン設計指針を参考に、自施設のターゲットに合わせたカスタマイズを行う。</p>
+    <div class="two-col">
+      <div class="callout coral" style="border-left-width:5px;margin:0">
+        <h4>個人旅行客・カップル</h4>
+        <p><strong>ベースプラン:</strong> 素泊まり（最低価格訴求）<br>
+        <strong>おすすめプラン:</strong> 朝食付き（主力プラン）<br>
+        <strong>プレミアム:</strong> 夕食付きor体験付き<br>
+        <strong>ポイント:</strong> SNS映えするビジュアル要素をプラン名・写真に反映</p>
+      </div>
+      <div class="callout teal" style="border-left-width:5px;margin:0">
+        <h4>ファミリー層</h4>
+        <p><strong>ベースプラン:</strong> 添い寝無料プラン<br>
+        <strong>おすすめプラン:</strong> キッズ特典付き<br>
+        <strong>プレミアム:</strong> ファミリースイート＋体験<br>
+        <strong>ポイント:</strong> 子供用アメニティ・食事内容の明記が安心感につながる</p>
+      </div>
+      <div class="callout gold" style="border-left-width:5px;margin:0">
+        <h4>ビジネス客</h4>
+        <p><strong>ベースプラン:</strong> 素泊まり（室料のみ）<br>
+        <strong>おすすめプラン:</strong> 朝食＋Wi-Fi保証付き<br>
+        <strong>プレミアム:</strong> レイトチェックアウト＋ラウンジアクセス<br>
+        <strong>ポイント:</strong> 領収書対応・チェックイン時間の柔軟性が選ばれる理由になる</p>
+      </div>
+      <div class="callout coral" style="border-left-width:5px;margin:0">
+        <h4>インバウンド客</h4>
+        <p><strong>ベースプラン:</strong> 素泊まり（英語表記）<br>
+        <strong>おすすめプラン:</strong> 朝食＋文化体験付き<br>
+        <strong>プレミアム:</strong> プライベートガイドツアー付き<br>
+        <strong>ポイント:</strong> 英語のプラン名は「説明的」より「体験価値」を伝える表現に</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num teal">3</span> ダイナミックプライシングの実践導入</h3>
+    <p>需要に応じて価格を変動させるダイナミックプライシングは収益最大化の最も有効な手法のひとつだが、導入にあたっては「どの範囲で」「どの程度」動かすかのルール設計が重要である。AIに完全自動化させる前に、人間が判断基準を設計する「ルールベース」での導入を推奨する。</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th class="gold">変動要因</th><th class="gold">ルール例</th><th class="gold">調整幅の目安</th></tr>
+        <tr><td>曜日</td><td>金・土は平日比＋30%、日〜木は基準価格</td><td>±20〜50%</td></tr>
+        <tr><td>季節</td><td>繁忙期（桜・紅葉・夏休み）は＋50%、閑散期は−20%</td><td>±20〜60%</td></tr>
+        <tr><td>リードタイム</td><td>90日前〜60日前：基準価格、30日前：＋10%、7日前：−5%</td><td>±5〜15%</td></tr>
+        <tr><td>残室数</td><td>残り5室を切ったら＋10%、残り2室で＋20%</td><td>＋5〜20%</td></tr>
+        <tr><td>イベント</td><td>周辺で大規模イベント開催時は＋30〜100%</td><td>＋30〜100%</td></tr>
+        <tr><td>天候</td><td>週末の雨予報で需要減が見込まれる場合−10%</td><td>±5〜15%</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num teal">4</span> プラン名と説明文の最適化</h3>
+    <p>プラン名は旅行者の目に最初に触れる情報であり、クリック率に直接的な影響を与える。説明的なプラン名から、体験価値を想起させるプラン名への変更で、クリック率が向上した事例は多数ある。</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th class="teal">改善前（説明的）</th><th class="teal">改善後（体験価値）</th><th class="teal">効果例</th></tr>
+        <tr><td>【早期割】朝食付きスタンダードプラン</td><td>「早起きが楽しくなる」朝焼けの特等席プラン</td><td>CTR 1.8倍</td></tr>
+        <tr><td>連泊割引プラン</td><td>「もう一泊したくなる」隠れ家ステイ</td><td>予約数 1.5倍</td></tr>
+        <tr><td>記念日プラン</td><td>「最高の1日に」スペシャルアニバーサリー</td><td>単価 1.3倍</td></tr>
+        <tr><td>地元食材プラン</td><td>「生産者から食卓へ」里山の恵みコース</td><td>満足度スコア 8%向上</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout gold">
+    <h4>プラン数管理の黄金則</h4>
+    <p>掲載するプラン数は「部屋タイプ数 × 2 + 1」を上限とする目安を提案する。例えば部屋タイプが3種類の場合、プラン数は最大7つ（3×2+1）に抑える。これを超える場合は、統廃合や早期割・直前割などの「仕組み」で代替できないかを検討する。プランを減らす勇気が、結果的に予約数を増やすという逆説を多くの施設が実証している。</p>
+  </div>
+</section>
+
+<section id="s11">
+  <span class="section-number part3">11 &nbsp; 診断</span>
+  <h2>診断フレームワーク</h2>
+  <p class="section-desc">自社のOTA活用状況を客観的に評価し、改善の優先順位を特定するための包括的な診断アプローチ。</p>
+  <div class="divider"></div>
+
+  <div class="subsection">
+    <h3><span class="num gold">1</span> OTA運用 包括診断チェックリスト</h3>
+    <p>以下の4カテゴリ・16項目で現在の運用状況を評価する。各項目を3段階（〇：達成できている / △：一部達成 / ×：未達）で自己評価し、スコアを算出する。</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th class="gold">カテゴリ</th><th class="gold">#</th><th class="gold">チェック項目</th><th class="gold">評価</th></tr>
+        <tr><td rowspan="4">基本・掲載</td><td>1</td><td>ターゲット市場に適したOTAを選定し、管理可能な数（3〜7媒体）に絞っている</td><td>○△×</td></tr>
+        <tr><td>2</td><td>各OTAの実質手数料（プロモーション費込み）を正確に把握し、定期的に見直している</td><td>○△×</td></tr>
+        <tr><td>3</td><td>OTA間のレートパリティが維持できており、特定のOTAだけ不当に安くなっていない</td><td>○△×</td></tr>
+        <tr><td>4</td><td>掲載していないOTAを含め、市場に新たな有力チャネルが出現していないか年2回はチェックしている</td><td>○△×</td></tr>
+        <tr><td rowspan="4">情報・写真</td><td>5</td><td>全掲載OTAで推奨画像サイズを満たす写真を使用している</td><td>○△×</td></tr>
+        <tr><td>6</td><td>施設外観・客室・バスルーム・食事・周辺環境の5カテゴリ全ての写真を掲載している</td><td>○△×</td></tr>
+        <tr><td>7</td><td>写真の季節更新を最低年2回行っている（桜・紅葉・雪・夏の4回が理想的）</td><td>○△×</td></tr>
+        <tr><td>8</td><td>多言語（英・中・韓）での施設情報提供ができている</td><td>○△×</td></tr>
+        <tr><td rowspan="4">価格・プラン</td><td>9</td><td>部屋タイプごとに独立した適正価格を設定し、一律の値下げをしていない</td><td>○△×</td></tr>
+        <tr><td>10</td><td>早割プラン（30日前・60日前・90日前）を設定し、早期予約層を取り込めている</td><td>○△×</td></tr>
+        <tr><td>11</td><td>掲載プラン数は適切に絞り込まれており（目安：部屋タイプ数×2+1以内）、ユーザーが迷わない</td><td>○△×</td></tr>
+        <tr><td>12</td><td>直販限定の特別プラン・特典を用意し、OTAとの差別化ができている</td><td>○△×</td></tr>
+        <tr><td rowspan="4">分析・運用</td><td>13</td><td>週次で予約データを確認し、前週比・前年比をチェックする習慣がある</td><td>○△×</td></tr>
+        <tr><td>14</td><td>OTA別のADR・RevPARを月次で比較分析し、リソース配分の判断に活用している</td><td>○△×</td></tr>
+        <tr><td>15</td><td>全言語のレビューに返信しており、特にネガティブレビューには具体的な改善策を示せている</td><td>○△×</td></tr>
+        <tr><td>16</td><td>定期的なPDCAサイクル（週次確認→月次分析→四半期見直し）が確立されている</td><td>○△×</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num gold">2</span> スコアリングと優先順位の決定</h3>
+    <p>評価結果に基づき、以下のスコアリングで現在の運用レベルを判定する。〇=2点、△=1点、×=0点として、合計32点満点で評価する。</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th class="gold">スコア</th><th class="gold">レベル</th><th class="gold">状態</th><th class="gold">推奨アクション</th></tr>
+        <tr><td>28〜32点</td><td>★★★ 先進</td><td>OTA運用が高度に最適化されている</td><td>新たな差別化戦略の探索、自社直販のさらなる強化</td></tr>
+        <tr><td>20〜27点</td><td>★★☆ 標準</td><td>基本的な運用はできているが改善余地あり</td><td>低スコア項目から優先的に対策。特に写真とデータ分析の強化</td></tr>
+        <tr><td>12〜19点</td><td>★☆☆ 発展途上</td><td>部分的な対応に留まっている</td><td>基本（掲載・写真・プラン）から段階的に改善。一度にすべてやろうとしない</td></tr>
+        <tr><td>0〜11点</td><td>☆☆☆ 未整備</td><td>OTA運用の基盤ができていない</td><td>まずはOTA選定と基本設定から。専門家への相談を推奨</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num gold">3</span> フェーズ別改善ロードマップ</h3>
+    <p>診断結果に基づき、以下の3フェーズで段階的に改善を進める。すべてを同時に改善しようとせず、1つのフェーズが固まってから次のフェーズに進むことが長続きのコツである。</p>
+
+    <div class="callout coral" style="margin-bottom:12px">
+      <h4>フェーズ1：基礎整備（1〜2週間）</h4>
+      <p><strong>対象：</strong>診断スコア12点未満の施設向け<br>
+      <strong>やること：</strong>写真のサイズ確認と明るさ補正、掲載プランの棚卸し（不要プランの削除）、レートパリティの確認、OTA管理画面のパスワード・権限の整理。<br>
+      <strong>期待効果：</strong>予約転換率5〜10%向上<br>
+      <strong>工数目安：</strong>集中して取り組めば2〜3日で完了</p>
+    </div>
+
+    <div class="callout teal" style="margin-bottom:12px">
+      <h4>フェーズ2：運用体質の強化（1〜2ヶ月）</h4>
+      <p><strong>対象：</strong>診断スコア12〜19点の施設向け<br>
+      <strong>やること：</strong>多言語対応（英・中・韓の最低限翻訳）、レビュー返信テンプレートの整備と全件対応、週次データ確認の習慣化、OTAプロモーションの適正化（不要な割引キャンペーンの見直し）。<br>
+      <strong>期待効果：</strong>露出数15〜30%増加、レビュースコア0.2〜0.5ポイント向上<br>
+      <strong>工数目安：</strong>週2〜3時間の運用で2ヶ月程度</p>
+    </div>
+
+    <div class="callout gold">
+      <h4>フェーズ3：収益最適化（3〜6ヶ月）</h4>
+      <p><strong>対象：</strong>診断スコア20点以上の施設向け<br>
+      <strong>やること：</strong>ダイナミックプライシングの本格導入、自社サイトの多言語化・UI改善、SNS発信の本格化（Instagram・TikTok運用）、OTAポートフォリオの戦略的見直し、周辺施設との差別化戦略の策定。<br>
+      <strong>期待効果：</strong>ADR 10〜20%向上、直販比率5〜15%増加<br>
+      <strong>工数目安：</strong>週5〜8時間の運用＋必要に応じた外注で6ヶ月程度</p>
+    </div>
+  </div>
+
+  <div class="subsection">
+    <h3><span class="num gold">4</span> 継続的改善のためのサイクル設計</h3>
+    <p>OTA運用に完成はない。一度改善したら終了ではなく、以下のサイクルを定期的に回すことで持続的な成長が可能になる。</p>
+    <ul>
+      <li class="gold"><strong>四半期ごと（年4回）：</strong>診断チェックリストを再実施し、前回からのスコア変化を確認する。低下している項目があれば、その原因を分析し再改善する</li>
+      <li class="gold"><strong>月次（年12回）：</strong>OTA別KPIダッシュボードを更新し、トレンドの変化を捉える。特にRevPARの推移を注視し、閾値を超えた変動があれば即座に対応する</li>
+      <li class="gold"><strong>半年ごと（年2回）：</strong>OTAポートフォリオそのものの見直しを行う。新たなOTAの評価、既存OTAの継続判断、市場環境の変化を確認する</li>
+      <li class="gold"><strong>年次（年1回）：</strong>競合分析を実施し、市場ポジションの変化を確認する。価格帯・提供サービス・ターゲット層の3軸で競合との差別化が維持できているか検証する</li>
+    </ul>
+  </div>
+
+  <div class="callout coral">
+    <h4>InnBuddyからのメッセージ</h4>
+    <p>本ハンドブックは、私たちInnBuddyが宿泊施設の皆様と伴走する中で培った知見を体系的にまとめたものです。「原理原則に立ち返る」という私たちの哲学の下、目の前の課題解決だけでなく、持続可能な収益構造の構築を目指しています。ご質問や具体的な課題がございましたら、いつでもご相談ください。</p>
   </div>
 </section>
 
@@ -420,7 +762,8 @@
 
 <footer>
   <div class="container">
-    <p>OTA活用ハンドブック &mdash; InnBuddy Internal Document</p>
+    <p class="inn">OTA活用ハンドブック &amp; 収益戦略</p>
+    <p style="margin-top:4px">InnBuddy Internal Knowledge &mdash; 2025年6月更新</p>
   </div>
 </footer>
 
@@ -431,8 +774,7 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       navLinks.forEach(a => a.classList.remove('active'));
-      const id = entry.target.getAttribute('id');
-      document.querySelector(`nav.toc a[href="#${id}"]`)?.classList.add('active');
+      document.querySelector(`nav.toc a[href="#${entry.target.id}"]`)?.classList.add('active');
     }
   });
 }, {rootMargin:'-50% 0px -50% 0px'});
