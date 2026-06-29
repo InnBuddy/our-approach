@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ryokan & Hotel Revenue Strategy | 宿泊経営戦略</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+  --bg: #f5f1eb;
+  --bg-alt: #ede8e0;
+  --surface: #ffffff;
+  --surface-elevated: #faf8f5;
+  --text: #1a1614;
+  --text-dim: #7a726a;
+  --text-bright: #0a0806;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-bright: rgba(0, 0, 0, 0.15);
+  --accent: #c2410c;
+  --accent-dim: rgba(194, 65, 12, 0.06);
+  --accent-light: rgba(194, 65, 12, 0.12);
+  --gold: #65a30d;
+  --gold-dim: rgba(101, 163, 13, 0.08);
+  --gold-light: rgba(101, 163, 13, 0.15);
+  --gold-glow: rgba(101, 163, 13, 0.06);
+  --ink: #2c2a25;
+  --warm: #8b7355;
+  --warm-dim: rgba(139, 115, 85, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f0d0a;
+    --bg-alt: #1a1714;
+    --surface: #1c1916;
+    --surface-elevated: #24211e;
+    --text: #e8e2da;
+    --text-dim: #8a847c;
+    --text-bright: #f5f0e8;
+    --border: rgba(255, 255, 255, 0.06);
+    --border-bright: rgba(255, 255, 255, 0.12);
+    --accent: #e8590c;
+    --accent-dim: rgba(232, 89, 12, 0.1);
+    --accent-light: rgba(232, 89, 12, 0.18);
+    --gold: #84cc16;
+    --gold-dim: rgba(132, 204, 22, 0.08);
+    --gold-light: rgba(132, 204, 22, 0.15);
+    --gold-glow: rgba(132, 204, 22, 0.05);
+    --warm: #a09080;
+    --warm-dim: rgba(160, 144, 128, 0.1);
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 10%, var(--gold-glow) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 90%, var(--accent-dim) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 24px;
+}
+
+.hero__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 24px;
+  animation: fadeUp 0.8s ease-out both;
+}
+
+.hero__label::before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
+  vertical-align: middle;
+  margin-right: 12px;
+}
+.hero__label::after {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
+  vertical-align: middle;
+  margin-left: 12px;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 8vw, 80px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -1px;
+  color: var(--text-bright);
+  margin-bottom: 16px;
+  animation: fadeUp 0.8s ease-out 0.15s both;
+}
+
+.hero__subtitle {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.5vw, 28px);
+  font-style: italic;
+  color: var(--text-dim);
+  max-width: 680px;
+  margin-bottom: 48px;
+  animation: fadeUp 0.8s ease-out 0.3s both;
+}
+
+.hero__scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: fadeUp 0.8s ease-out 0.5s both;
+}
+
+.hero__scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--text-dim), transparent);
+}
+
+/* ===== QUOTE STRAP ===== */
+.strap {
+  position: relative;
+  z-index: 1;
+  padding: 80px 24px;
+  text-align: center;
+  background: var(--accent);
+  color: #fff;
+}
+
+.strap__text {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3vw, 36px);
+  font-style: italic;
+  line-height: 1.4;
+  max-width: 720px;
+  margin: 0 auto;
+  color: rgba(255,255,255,0.9);
+}
+
+.strap__attr {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-top: 20px;
+}
+
+/* ===== SECTIONS ===== */
+.section {
+  position: relative;
+  z-index: 1;
+  padding: 100px 24px;
+}
+
+.section__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section__header {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 32px;
+  margin-bottom: 48px;
+  align-items: start;
+}
+
+.section__num {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--gold);
+  opacity: 0.4;
+  letter-spacing: -2px;
+}
+
+.section__num-line {
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: var(--gold);
+  margin-top: 8px;
+  opacity: 0.5;
+}
+
+.section__tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.section__title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--text-bright);
+  margin-bottom: 12px;
+}
+
+.section__subtitle {
+  font-size: clamp(16px, 1.3vw, 18px);
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* ===== FATE CARD ===== */
+.fate {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.fate::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--accent));
+  border-radius: 16px 16px 0 0;
+}
+
+.fate__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.fate__quote {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-style: italic;
+  color: var(--text-bright);
+  line-height: 1.3;
+  margin-bottom: 20px;
+  padding-left: 24px;
+  border-left: 2px solid var(--gold);
+}
+
+.fate__desc {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text);
+  margin-bottom: 28px;
+}
+
+/* ===== APPROACH ===== */
+.approach {
+  background: var(--accent-dim);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 32px;
+}
+
+.approach__title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.approach__title::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.approach__text {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+/* ===== MEASURES ===== */
+.measures {
+  display: grid;
+  gap: 12px;
+}
+
+.measure {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: start;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.measure:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.measure__icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.measure__text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+/* ===== DUAL APPROACH ===== */
+.dual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+@media (max-width: 768px) {
+  .dual { grid-template-columns: 1fr; }
+}
+
+.dual__item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dual__item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+.dual__item--peak::before { background: var(--gold); }
+.dual__item--off::before { background: var(--accent); }
+
+.dual__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.dual__item--peak .dual__label { color: var(--gold); }
+.dual__item--off .dual__label { color: var(--accent); }
+
+.dual__title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 10px;
+  color: var(--text-bright);
+}
+
+.dual__text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+/* ===== PLATFORM LIST ===== */
+.platform-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.platform-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.platform-item:last-child { border-bottom: none; }
+
+.platform-item__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+  margin-top: 9px;
+}
+
+/* ===== CLOSING ===== */
+.closing {
+  position: relative;
+  z-index: 1;
+  padding: 120px 24px;
+  text-align: center;
+  background: var(--accent);
+  color: #fff;
+}
+
+.closing__num {
+  font-family: var(--font-display);
+  font-size: clamp(60px, 8vw, 100px);
+  font-weight: 400;
+  line-height: 1;
+  color: rgba(255,255,255,0.08);
+  margin-bottom: 16px;
+}
+
+.closing__text {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.2;
+  color: rgba(255,255,255,0.9);
+  max-width: 640px;
+  margin: 0 auto 16px;
+}
+
+.closing__sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.6);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.closing__divider {
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+  margin: 24px auto;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  position: relative;
+  z-index: 1;
+  padding: 40px 24px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border);
+}
+
+/* ===== NAV ===== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+
+.nav__logo {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: #fff;
+  pointer-events: auto;
+}
+
+.nav__contact {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  pointer-events: auto;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.nav__contact:hover {
+  border-color: #fff;
+  background: rgba(255,255,255,0.1);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeScale {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.anim-fade {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.anim-fade.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.anim-scale {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.anim-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .anim-fade, .anim-scale { opacity: 1; transform: none; }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .section { padding: 60px 16px; }
+  .section__header { grid-template-columns: 1fr; gap: 8px; }
+  .section__num { font-size: 36px; }
+  .section__num-line { display: none; }
+  .fate { padding: 24px; }
+  .approach { padding: 24px; }
+  .measure { grid-template-columns: 1fr; gap: 8px; }
+  .hero { padding: 60px 20px; }
+  .strap { padding: 60px 20px; }
+  .closing { padding: 80px 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav__logo">STRATEGY</span>
+  <div style="display:flex;gap:8px;pointer-events:auto;">
+    <button onclick="downloadPage()" class="nav__contact" style="cursor:pointer;background:none;font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:#fff;padding:8px 16px;border:1px solid rgba(255,255,255,0.3);border-radius:6px;transition:border-color 0.2s ease,background 0.2s ease;">ダウンロード</button>
+    <a href="#" class="nav__contact">問い合わせ</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero__label">Revenue Strategy</div>
+  <h1 class="hero__title">
+    Ryokan &amp; Hotel<br>
+    Revenue Strategy
+  </h1>
+  <p class="hero__subtitle">
+    私たちの宿経営に対する<br>考え方・戦略
+  </p>
+  <div class="hero__scroll">
+    <span>Scroll</span>
+    <div class="hero__scroll-line"></div>
+  </div>
+</section>
+
+<section class="strap">
+  <p class="strap__text">
+    「今日の1室は、明日の1室ではない」<br>
+    — 宿泊業が抱える4つの「宿命」と、<br>
+    それに向き合うための具体的なアプローチ
+  </p>
+  <p class="strap__attr">— Strategy</p>
+</section>
+
+<section class="section" id="sec01">
+  <div class="section__inner">
+    <div class="section__header anim-fade">
+      <div>
+        <div class="section__num">01</div>
+        <div class="section__num-line"></div>
+      </div>
+      <div>
+        <div class="section__tag">宿命</div>
+        <h2 class="section__title">在庫の「時間消滅性」</h2>
+        <p class="section__subtitle">今日売れ残ってしまった部屋は、明日に持ち越せない</p>
+      </div>
+    </div>
+
+    <div class="fate anim-fade">
+      <div class="fate__label">宿命</div>
+      <div class="fate__quote">
+        今日売れ残ってしまった部屋は、明日に持ち越せない
+      </div>
+      <p class="fate__desc">
+        私たちが売っているのは「部屋という空間」ではなく「今日という限られた時間そのもの」。明日になれば、その部屋が持つ今日の価値は完全に消滅します。毎日の1室1室が、その日限りの「一度きりの商品」であるという基本に立ち返ることが、すべての戦略の出発点です。
+      </p>
+    </div>
+
+    <div class="approach anim-fade">
+      <div class="approach__title">考え方とアプローチ</div>
+      <p class="approach__text">
+        安易な一括値下げを捨て、部屋タイプごとに稼働率をコントロール。すべての部屋を均一に値下げして埋めるのではなく、客室を部屋タイプごとに切り分けて考える。特に「特別室・スイートルーム」など収益の柱となる高単価客室の稼働を最大化する専用の販売ロジックを組み立てます。
+      </p>
+    </div>
+
+    <div class="measures">
+      <div class="measure anim-fade">
+        <div class="measure__icon">*</div>
+        <div class="measure__text">
+          <strong>部屋タイプごとの独立した適正価格のご提案</strong><br>
+          すべての部屋を連動させて一律に上下させるのではなく、それぞれの部屋が持つ価値とターゲット層に応じた適正価格を算出。高単価な部屋の価値を落とすことなく、確実な収益化を狙います。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="sec02" style="background: var(--bg-alt);">
+  <div class="section__inner">
+    <div class="section__header anim-fade">
+      <div>
+        <div class="section__num">02</div>
+        <div class="section__num-line"></div>
+      </div>
+      <div>
+        <div class="section__tag">宿命</div>
+        <h2 class="section__title">供給の「絶対的固定性」</h2>
+        <p class="section__subtitle">上限も下限も動かせない箱の宿命</p>
+      </div>
+    </div>
+
+    <div class="fate anim-fade">
+      <div class="fate__label">宿命</div>
+      <div class="fate__quote">
+        明日急に、客室数を2倍・3倍にすることはできない
+      </div>
+      <p class="fate__desc">
+        需要がどれだけ変動しても、部屋数は決まっており、製造業のような増産調整はききません。供給量が完全にロックされているからこそ、今ある部屋数を「焦って早く埋めすぎない、かといって残しすぎない」繊細なコントロールが必要です。
+      </p>
+    </div>
+
+    <div class="approach anim-fade">
+      <div class="approach__title">考え方とアプローチ</div>
+      <p class="approach__text">
+        「機会損失」と「時間消滅」のベストバランス。早く売りすぎて後半のチャンスを逃す「機会損失」と、高くしすぎて直前に空室になる「時間消滅」。この両極のバランスを、データをもとに見極めます。
+      </p>
+    </div>
+
+    <div class="measures">
+      <div class="measure anim-fade">
+        <div class="measure__icon">*</div>
+        <div class="measure__text">
+          <strong>ブッキングカーブを意識した「根拠のある価格調整」</strong><br>
+          「○日前までに何室埋まっているべきか」という理想の予約進捗を可視化。焦りからくる安易な値下げをできる限りなくし、カーブが適正ラインを下回った場合のみ、データに基づく戦略的な価格適正化を行います。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="sec03">
+  <div class="section__inner">
+    <div class="section__header anim-fade">
+      <div>
+        <div class="section__num">03</div>
+        <div class="section__num-line"></div>
+      </div>
+      <div>
+        <div class="section__tag">宿命</div>
+        <h2 class="section__title">需要の<br class="hide-mobile">「激しい変動」</h2>
+        <p class="section__subtitle">波を見据えた先手の戦略</p>
+      </div>
+    </div>
+
+    <div class="fate anim-fade">
+      <div class="fate__label">宿命</div>
+      <div class="fate__quote">
+        日本の美しい四季は、同時に激しい需要の波を生む
+      </div>
+      <p class="fate__desc">
+        既存のシーズンカレンダーを「高い時期・安い時期」と一括りに捉えるだけでは波に対応できません。近年は長期連休の中でも「繁忙日」と「閑散日」の差が顕著です。一方でAI任せの動的価格は客層をブレさせ、現場のオペレーションやリピーターの信頼感を損ねます。
+      </p>
+    </div>
+
+    <div class="approach anim-fade">
+      <div class="approach__title">考え方とアプローチ</div>
+      <p class="approach__text">
+        動的に動かしすぎず、シーズンごとの「ユーザーの動き」で切り分け。機械的に価格を毎日乱高下させることはしません。「繁忙期に早く動くユーザー」と「閑散期に直前で動くユーザー」の特性を見極め、売り方を最初からきれいに切り分けます。
+      </p>
+    </div>
+
+    <div class="section__subtitle" style="text-align:center;margin-bottom:24px;font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);">
+      リードタイム別ターゲット切り分け
+    </div>
+
+    <div class="dual">
+      <div class="dual__item dual__item--peak anim-scale">
+        <div class="dual__label">繁忙期</div>
+        <div class="dual__title">先行予約アプローチ</div>
+        <div class="dual__text">
+          3ヶ月〜半年前から動く「確実にその地を訪れたい優良な先行予約層」に、先行予約ならではのメリットを打ち出し、早い段階で確実なベースを築く。
+        </div>
+      </div>
+      <div class="dual__item dual__item--off anim-scale">
+        <div class="dual__label">閑散期</div>
+        <div class="dual__title">直前アプローチ</div>
+        <div class="dual__text">
+          直前（2週間〜数日前）まで動かない「直前層」や平日に動けるターゲットに、既存プランと完全に切り分けた専用プラン・チャネルを用意し、現場に負荷をかけない形でアプローチ。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="sec04" style="background: var(--bg-alt);">
+  <div class="section__inner">
+    <div class="section__header anim-fade">
+      <div>
+        <div class="section__num">04</div>
+        <div class="section__num-line"></div>
+      </div>
+      <div>
+        <div class="section__tag">宿命</div>
+        <h2 class="section__title">顧客ニーズの<br class="hide-mobile">「多極化・多様化」</h2>
+        <p class="section__subtitle">選ばれるためのシンプルさと、直前安売りの脱却</p>
+      </div>
+    </div>
+
+    <div class="fate anim-fade">
+      <div class="fate__label">宿命</div>
+      <div class="fate__quote">
+        価値観がバラバラな時代、全員に好かれようとすると誰にも刺さらない
+      </div>
+      <p class="fate__desc">
+        インバウンド、女子旅、多世代旅行、ビジネス、LGBTQ+など旅行スタイルは多様化。一方でプランを乱立させるとコンセプトが崩れ、ユーザーを迷わせ、直前の「直前割」に頼らざるを得なくなります。ネット販売ではプランをできるだけシンプルに見せることが重要です。
+      </p>
+    </div>
+
+    <div class="approach anim-fade">
+      <div class="approach__title">考え方とアプローチ</div>
+      <p class="approach__text">
+        早割を原動力に、「直前割」に頼らない間際予約の獲得。3ヶ月〜半年前から動く優良な顧客層には「早割」で早期にベースを埋め、経営を安定化。間際の予約は、安易な直前割をなくしつつ適正単価で取り切ることを最も重要視します。
+      </p>
+    </div>
+
+    <div class="section__subtitle" style="text-align:center;margin-bottom:24px;font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);">
+      「ジャムの法則」に基づくプラン整理
+    </div>
+
+    <div class="measures">
+      <div class="measure anim-fade">
+        <div class="measure__icon">1</div>
+        <div class="measure__text">
+          <strong>ターゲットの徹底絞り込み</strong><br>
+          お宿様の強み・特徴を調べ上げ、強化すべきターゲット層を明確に選定。乱立する不要なプランを徹底的に「間引き」ます。
+        </div>
+      </div>
+      <div class="measure anim-fade">
+        <div class="measure__icon">2</div>
+        <div class="measure__text">
+          <strong>直前の「迷わせない」プラン構成</strong><br>
+          比較する時間がない間際のユーザーに向け、迷わずパッと判断できるシンプルで強力なプラン・部屋タイプ構成へ画面を整理。
+        </div>
+      </div>
+      <div class="measure anim-fade">
+        <div class="measure__icon">3</div>
+        <div class="measure__text">
+          <strong>OTAプロモーションの適正化</strong><br>
+          じゃらん・楽天・一休などで「なんとなく参加し続けていた値引きプロモーション」を洗い出し、ブランドを毀損する一律割引への参加をやめ、効果のある露出施策だけを厳選。
+        </div>
+      </div>
+    </div>
+
+    <div class="fate anim-fade" style="margin-top: 32px;">
+      <p class="fate__desc" style="margin-bottom: 0;">
+        直前割という「価格を下げる魅力」に頼るのではなく、「選びやすさ・わかりやすさ・露出の最適化」という総合的なウェブ戦略の力で、間際の高単価な予約を確実に勝ち取ります。
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="closing__num">04 / 04</div>
+  <p class="closing__text">宿命を、戦略に変える</p>
+  <div class="closing__divider"></div>
+  <p class="closing__sub">
+    在庫の消滅性、供給の固定性、需要の波、顧客の多様化 — 4つの宿命と正面から向き合い、データとロジックに基づいた一貫した戦略で、宿泊業の収益最大化を目指します。
+  </p>
+</section>
+
+<footer class="footer">
+  Ryokan &amp; Hotel Revenue Strategy &mdash; All Rights Reserved
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.anim-fade, .anim-scale').forEach(el => observer.observe(el));
+
+function downloadPage() {
+  const html = document.documentElement.outerHTML;
+  const blob = new Blob([
+    '<!DOCTYPE html>\n' + html
+  ], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'revenue-strategy.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
