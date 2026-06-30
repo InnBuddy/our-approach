@@ -8,25 +8,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700;900&family=Noto+Sans+JP:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #163a28;
-    --navy-light: #1e4a34;
-    --navy-mid: #2a5a40;
+    --navy: #6b1515;
+    --navy-light: #7a2020;
+    --navy-mid: #5a1010;
     --gold: #c9a03a;
     --gold-light: #f5edd6;
-    --orange: #d47a30;
-    --orange-light: #fef0e6;
-    --orange-mid: #e88a4a;
-    --coral: #d47a30;
-    --coral-light: #fef0e6;
-    --coral-mid: #e88a4a;
+    --orange: #b85a30;
+    --orange-light: #f5e8de;
+    --orange-mid: #c86a3a;
+    --coral: #b85a30;
+    --coral-light: #f5e8de;
+    --coral-mid: #c86a3a;
     --teal: #1a7a72;
     --teal-light: #e8f5f3;
-    --cream: #faf6f0;
-    --warm-gray: #f3efe8;
+    --cream: #f5efe8;
+    --warm-gray: #efe8e0;
     --text: #111111;
     --text-dim: #6b7280;
     --text-muted: #9ca3af;
-    --border: #e5ddd2;
+    --border: #ddd6ce;
     --card-bg: #ffffff;
     --shadow-sm: 0 1px 3px rgba(0,0,0,.06);
     --shadow-md: 0 4px 12px rgba(0,0,0,.07);
@@ -42,7 +42,7 @@
 
   #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--coral));z-index:1000;transition:width .1s;width:0%}
 
-  header{background:linear-gradient(165deg,var(--navy) 0%,var(--navy-light) 40%,#24503a 70%,var(--navy-mid) 100%);color:#fff;padding:72px 0 56px;position:relative;overflow:hidden}
+  header{background:linear-gradient(165deg,#6b1515 0%,#7a2020 40%,#8a3030 70%,#5a1010 100%);color:#fff;padding:72px 0 56px;position:relative;overflow:hidden}
   header::before{content:'';position:absolute;top:-40%;right:-20%;width:600px;height:600px;background:radial-gradient(circle,rgba(201,160,58,.08) 0%,transparent 70%);pointer-events:none}
   header::after{content:'';position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(212,122,48,.06) 0%,transparent 70%);pointer-events:none}
   header .container{position:relative;z-index:1}
@@ -108,7 +108,7 @@
   .callout.coral{background:var(--coral-light);border-color:var(--coral)}
   .callout.teal{background:var(--teal-light);border-color:var(--teal)}
   .callout.gold{background:var(--gold-light);border-color:var(--gold)}
-  .callout.navy{background:#eef3f8;border-color:var(--navy)}
+  .callout.navy{background:#f0e8de;border-color:var(--navy)}
   .callout h4{font-size:.88rem;margin-bottom:5px;display:flex;align-items:center;gap:8px}
 
   .kpi-grid{display:grid;grid-template-columns:1fr;gap:10px;margin:14px 0 18px}
@@ -152,6 +152,18 @@
 
   footer{text-align:center;padding:40px 0;color:var(--text-muted);font-size:.75rem;border-top:1px solid var(--border);background:var(--card-bg)}
   footer .brand{font-family:var(--font-serif);color:var(--navy);font-weight:700;font-size:.9rem}
+
+  /* Principles */
+  .principles{margin:0 0 40px;padding:36px 32px;background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:var(--radius);color:#fff}
+  .principles h2{font-family:var(--font-serif);font-size:1.3rem;font-weight:700;text-align:center;margin-bottom:4px;letter-spacing:.08em}
+  .principles .sub{text-align:center;font-size:.78rem;opacity:.65;margin-bottom:24px}
+  .principles-grid{display:grid;grid-template-columns:1fr;gap:8px}
+  @media(min-width:640px){.principles-grid{grid-template-columns:1fr 1fr}}
+  .principle-card{display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(255,255,255,.08);backdrop-filter:blur(4px);border-radius:8px;transition:background .2s}
+  .principle-card:hover{background:rgba(255,255,255,.14)}
+  .principle-card .pnum{font-family:var(--font-mono);font-size:.75rem;font-weight:700;color:var(--gold);width:24px;flex-shrink:0;text-align:center}
+  .principle-card .ptext{font-size:.8rem;line-height:1.4;font-weight:500}
+  .principle-card .ptext em{font-style:normal;color:var(--gold);font-weight:600}
 
   @media(min-width:860px){header h1{font-size:3rem}}
   @media print{nav.toc-wrap{display:none}#progress{display:none}section{page-break-inside:avoid}.takeaways{break-inside:avoid}}
@@ -399,10 +411,10 @@
     <div class="table-wrap">
       <table>
         <tr><th class="teal">OTA</th><th class="teal">強み</th><th class="teal">手数料相場</th><th class="teal">こんな施設におすすめ</th></tr>
-        <tr><td>Booking.com</td><td>世界最大の宿泊予約サイト、欧州からの旅行者に特に強い</td><td>15〜18%</td><td>インバウンド比率を高めたいすべての施設</td></tr>
+        <tr><td>Booking.com</td><td>欧州を中心に世界中で利用される最大級のOTA、日本でも多様な国籍の旅行者が利用</td><td>15〜18%</td><td>インバウンド比率を高めたいすべての施設</td></tr>
         <tr><td>Expedia</td><td>北米・オセアニア市場に強い、航空券＋宿泊のパッケージ予約が強力</td><td>15〜25%</td><td>北米からの集客を強化したい施設</td></tr>
         <tr><td>Agoda</td><td>アジア圏（特に東南アジア）のユーザー基盤が厚い</td><td>15〜20%</td><td>アジアからのインバウンド需要を取り込みたい施設</td></tr>
-        <tr><td>Trip.com</td><td>中国市場で圧倒的なシェア、支付宝・WeChat Payとの連携が強力</td><td>15〜20%</td><td>中国人観光客を主要ターゲットとする施設</td></tr>
+        <tr><td>Trip.com</td><td>中国を中心としたアジア圏で強い、支付宝・WeChat Payとの連携が強力</td><td>15〜20%</td><td>中国人観光客を主要ターゲットとする施設</td></tr>
       </table>
     </div>
     <p>海外OTAは国内OTAと比べて手数料率が高い傾向にあります。ただし、インバウンド需要の取り込みによる売上増加を考慮すれば、十分にペイする投資であるケースがほとんどです。また、海外OTAは予約のキャンセルポリシーが国内OTAよりも柔軟であることが多く、この点も理解しておく必要があります。</p>
@@ -416,7 +428,7 @@
       <li class="teal"><strong>一休.com：</strong>30代後半〜60代の富裕層が中心。リードタイムは長めで、価格よりも内容やクチコミを重視する傾向。</li>
       <li class="teal"><strong>Booking.com：</strong>リードタイムが短く（1〜2週間前の予約が多い）、キャンセル率がやや高い。レビュー（クチコミ）の影響が極めて大きい。</li>
       <li class="teal"><strong>Expedia：</strong>パッケージ予約（航空券＋宿泊）での利用が多く、長期のリードタイムを持つ旅行者が多い。</li>
-      <li class="teal"><strong>Trip.com：</strong>中国人旅行者の予約が大半。モバイルアプリ経由の予約が多く、直前予約よりも計画的に予約する傾向。</li>
+      <li class="teal"><strong>Trip.com：</strong>中国を中心にシンガポール・タイ・韓国・マレーシアなどアジア圏での利用が拡大中。モバイルアプリ経由の予約が多く、計画的に予約する傾向。</li>
     </ul>
   </div>
 
@@ -516,7 +528,7 @@
       <strong>ステップ2：</strong>各OTAの実質手数料（公開手数料＋プロモーション費＋クーポン負担等）を計算します。<br>
       <strong>ステップ3：</strong>OTA運用にかかる人件費やシステム費を加算します。<br>
       <strong>ステップ4：</strong>（売上 − 総コスト）÷ 総コスト × 100 でROIを算出します。</p>
-      <p>例：あるOTAの月間売上が500万円、実質手数料が75万円（15%）、運用人件費が10万円の場合、投資額は85万円。売上から投資額を差し引いた純利益は415万円。ROIは415÷85×100≒488%です。</p>
+      <p>例：OTA改善に50万円を投資した結果、改善後の増分利益が150万円増加した場合、ROIは150万円÷50万円×100＝300%です。このように、投資額に対してどれだけの利益が追加で生まれたかを測ることで、改善施策の有効性を客観的に判断できます。</p>
     </div>
     <p>ROIの計測を怠ると、「なんとなく」の感覚でOTAを運用することになり、コストに見合わないチャネルにリソースを費やしてしまうリスクがあります。最低でも四半期に一度はOTAごとのROIを計算し、撤退や強化の判断材料にしましょう。</p>
   </div>
@@ -835,7 +847,7 @@ Q3. このプランの代わりに既存の別プランで
         <tr><td>直販限定特典</td><td>レイトチェックアウト、ウェルカムドリンク、アメニティグレードアップなど、原価が低く知覚価値が高い特典を用意する</td><td>直販比率2〜5%向上</td><td>低</td></tr>
         <tr><td>予約体験の最適化</td><td>スマートフォンでの予約操作性を改善し、予約完了までのクリック数を最小化する。Apple Pay・Google Payなどのタッチ決済にも対応する</td><td>CVR 10〜20%改善</td><td>中</td></tr>
         <tr><td>メールマガジン・LINE配信</td><td>宿泊後のお客様に次回の宿泊を促すクーポンや情報を定期的に配信する</td><td>リピート率5〜10%向上</td><td>低</td></tr>
-        <tr><td>Google My Businessの最適化</td><td>施設情報を完全に入力し、写真を定期的に更新し、口コミに全件返信する</td><td>直販からの露出増加</td><td>低</td></tr>
+        <tr><td>Google Business Profileの最適化</td><td>施設情報を完全に入力し、写真を定期的に更新し、口コミに全件返信する</td><td>直販からの露出増加</td><td>低</td></tr>
         <tr><td>SNS発信</td><td>Instagram、TikTokなどで施設の魅力を定期的に発信する。料理、景色、スタッフの日常など、共感を呼ぶコンテンツを心がける</td><td>認知拡大・ブランディング</td><td>低〜中</td></tr>
       </table>
     </div>
@@ -1052,6 +1064,26 @@ Q3. このプランの代わりに既存の別プランで
     </ul>
   </div>
 </section>
+
+<!-- ============================================================ -->
+<!-- InnBuddy OTA運営10原則 -->
+<!-- ============================================================ -->
+<div class="principles">
+  <h2>InnBuddy OTA運営10原則</h2>
+  <p class="sub">すべての戦略判断の拠り所となる、私たちの行動指針</p>
+  <div class="principles-grid">
+    <div class="principle-card"><span class="pnum">01</span><span class="ptext">OTAは<em>数</em>ではなく<em>戦略</em></span></div>
+    <div class="principle-card"><span class="pnum">02</span><span class="ptext">値下げは<em>最後の手段</em></span></div>
+    <div class="principle-card"><span class="pnum">03</span><span class="ptext"><em>RevPAR</em>で判断する</span></div>
+    <div class="principle-card"><span class="pnum">04</span><span class="ptext">写真は<em>広告</em>である</span></div>
+    <div class="principle-card"><span class="pnum">05</span><span class="ptext">プランは<em>マーケティング</em></span></div>
+    <div class="principle-card"><span class="pnum">06</span><span class="ptext"><em>データ</em>を信じる</span></div>
+    <div class="principle-card"><span class="pnum">07</span><span class="ptext">OTAは<em>入口</em></span></div>
+    <div class="principle-card"><span class="pnum">08</span><span class="ptext">自社予約が<em>出口</em></span></div>
+    <div class="principle-card"><span class="pnum">09</span><span class="ptext">小さく<em>改善を続ける</em></span></div>
+    <div class="principle-card"><span class="pnum">10</span><span class="ptext">宿の<em>価値を守る</em></span></div>
+  </div>
+</div>
 
 </div><!-- /container -->
 
