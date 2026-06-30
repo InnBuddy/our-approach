@@ -3,24 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OTA活用ハンドブック | InnBuddy</title>
+<title>InnBuddy Knowledge Base</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700;900&family=Noto+Sans+JP:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #0f1b2d;
-    --navy-light: #1a2d46;
-    --navy-mid: #2a4060;
+    --navy: #163a28;
+    --navy-light: #1e4a34;
+    --navy-mid: #2a5a40;
     --gold: #c9a03a;
     --gold-light: #f5edd6;
-    --coral: #d4583c;
-    --coral-light: #fbf0ec;
-    --coral-mid: #e8775a;
+    --orange: #d47a30;
+    --orange-light: #fef0e6;
+    --orange-mid: #e88a4a;
+    --coral: #d47a30;
+    --coral-light: #fef0e6;
+    --coral-mid: #e88a4a;
     --teal: #1a7a72;
     --teal-light: #e8f5f3;
     --cream: #faf6f0;
     --warm-gray: #f3efe8;
-    --text: #1a1a2e;
+    --text: #111111;
     --text-dim: #6b7280;
     --text-muted: #9ca3af;
     --border: #e5ddd2;
@@ -39,9 +42,9 @@
 
   #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--coral));z-index:1000;transition:width .1s;width:0%}
 
-  header{background:linear-gradient(165deg,var(--navy) 0%,var(--navy-light) 40%,#1e3a5f 70%,var(--navy-mid) 100%);color:#fff;padding:72px 0 56px;position:relative;overflow:hidden}
+  header{background:linear-gradient(165deg,var(--navy) 0%,var(--navy-light) 40%,#24503a 70%,var(--navy-mid) 100%);color:#fff;padding:72px 0 56px;position:relative;overflow:hidden}
   header::before{content:'';position:absolute;top:-40%;right:-20%;width:600px;height:600px;background:radial-gradient(circle,rgba(201,160,58,.08) 0%,transparent 70%);pointer-events:none}
-  header::after{content:'';position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(212,88,60,.06) 0%,transparent 70%);pointer-events:none}
+  header::after{content:'';position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(212,122,48,.06) 0%,transparent 70%);pointer-events:none}
   header .container{position:relative;z-index:1}
   header .badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:.65rem;font-weight:500;letter-spacing:.15em;padding:5px 14px;border-radius:20px;background:rgba(255,255,255,.08);backdrop-filter:blur(8px);margin-bottom:18px;text-transform:uppercase;color:rgba(255,255,255,.7)}
   header .badge span{width:6px;height:6px;border-radius:50%;background:var(--gold);display:inline-block}
@@ -62,6 +65,7 @@
   section:nth-child(even){background:var(--card-bg)}
   .section-head{display:flex;align-items:center;gap:16px;margin-bottom:20px}
   .section-number{font-family:var(--font-mono);font-size:.65rem;font-weight:500;letter-spacing:.12em;padding:4px 14px;border-radius:6px;white-space:nowrap}
+  .section-number.part0{background:var(--gold-light);color:var(--gold);font-weight:700}
   .section-number.part1{background:var(--coral-light);color:var(--coral)}
   .section-number.part2{background:var(--teal-light);color:var(--teal)}
   .section-number.part3{background:var(--gold-light);color:var(--gold)}
@@ -83,6 +87,11 @@
   .subsection ul li.coral::before{background:var(--coral)}
   .subsection ul li.teal::before{background:var(--teal)}
   .subsection ul li.gold::before{background:var(--gold)}
+
+  /* Fate Quote */
+  .fate-quote{padding:18px 22px;margin:6px 0 18px;background:var(--warm-gray);border-radius:var(--radius);border-left:4px solid var(--orange);font-size:.84rem;line-height:1.8;color:var(--text)}
+  .fate-quote .label{font-family:var(--font-mono);font-size:.6rem;font-weight:600;letter-spacing:.12em;color:var(--orange);text-transform:uppercase;margin-bottom:3px}
+  .fate-quote .label em{font-style:normal;color:var(--gold)}
 
   .table-wrap{overflow-x:auto;margin:14px 0 18px;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-sm)}
   table{width:100%;border-collapse:collapse;font-size:.8rem}
@@ -155,11 +164,9 @@
 <header>
   <div class="container">
     <div class="badge"><span></span> InnBuddy Knowledge Base</div>
-    <h1>OTA活用ハンドブック</h1>
-    <p class="sub">基礎知識から実践まで、宿泊施設のための完全ガイド</p>
+    <h1>InnBuddy <em>Knowledge Base</em></h1>
+    <p class="sub">OTAコンサルティングの考え方と実践 — 宿泊施設のための社内ハンドブック</p>
     <div class="meta">
-      <span>全9章</span>
-      <span>約25,000字</span>
       <span>2025年6月更新</span>
     </div>
   </div>
@@ -167,6 +174,7 @@
 
 <nav class="toc-wrap">
   <div class="container toc-inner">
+    <a href="#s0">私たちの考え方</a>
     <a href="#s1">第1章 OTAとは</a>
     <a href="#s2">第2章 OTA比較</a>
     <a href="#s3">第3章 KPIとROI</a>
@@ -180,6 +188,91 @@
 </nav>
 
 <div class="container">
+
+<!-- ============================================================ -->
+<!-- 序：私たちの考え方 — 4つの宿命 -->
+<!-- ============================================================ -->
+<section id="s0">
+  <div class="section-head">
+    <span class="section-number part0">序</span>
+    <span class="section-line"></span>
+  </div>
+  <h2>OTAコンサルティングに対する私たちの考え方</h2>
+  <p class="section-desc">私たちは、宿泊施設が向き合う「4つの宿命」を出発点に、すべての戦略を組み立てます。このフレームワークなくして、真の収益改善はありえません。</p>
+
+  <!-- 宿命1 -->
+  <div class="subsection">
+    <h3><span class="num gold">1</span> 在庫の「時間消滅性」— 今日の1室は、明日の1室ではない</h3>
+
+    <div class="fate-quote">
+      <div class="label">▼ 宿命 1</div>
+      <p>「今日売れ残ってしまった部屋は、明日に持ち越せない」— これは、宿泊業に携わる皆様なら誰もが日々、身に染みて感じていらっしゃる大前提と考えます。あえてこれを「今日の1室は、明日の1室ではない」という言葉にするのは、私たちが売っているものが、単なる「部屋という空間」ではなく、「今日という限られた時間そのもの」だからです。明日になってしまえば、その部屋が持つ今日の価値は完全に消滅します。だからこそ、毎日の1室1室が、その日限りの「一度きりの商品」であるという基本に立ち返ることが、すべての戦略のスタートラインになります。</p>
+    </div>
+
+    <p><strong>私たちの考え方とアプローチ</strong></p>
+    <p>安易な一括値下げを捨て、部屋タイプごとに稼働率をコントロールします。時間消滅を防ぐために全体の稼働率を目指すことは極めて重要ですが、すべての部屋を均一に値下げして埋めるアプローチは避けるべきです。私たちは、客室をお宿様独自の部屋タイプごとに切り分けて考えます。特に、単価が高く宿の収益の柱となる「特別室やスイートルーム」などの高単価客室の稼働を、マストで最大化していくための専用の販売ロジックを組み立てます。</p>
+
+    <p><strong>具体的な施策</strong></p>
+    <p>部屋タイプごとの独立した適正価格のご提案 — スタンダードからスイートまで、すべての部屋を連動させて一律に上下させるのではなく、それぞれの部屋が持つ価値とターゲット層に応じた「部屋タイプごとの独立した適正価格」を算出し、ご提案します。これにより、高単価な部屋の価値を落とすことなく、確実な収益化を狙います。</p>
+  </div>
+
+  <!-- 宿命2 -->
+  <div class="subsection">
+    <h3><span class="num gold">2</span> 供給の「絶対的固定性」— 上限も下限も動かせない箱の宿命</h3>
+
+    <div class="fate-quote">
+      <div class="label">▼ 宿命 2</div>
+      <p>「明日急に、客室数を2倍・3倍にすることはできない」— どれだけ需要が爆発的に増えたとしても、逆に完全に冷え込んだとしても、お宿様が持つ部屋の数は決まっています。製造業のように「売れるから増産する」という調整が一切ききません。この「供給量が完全にロックされている」からこそ、今ある部屋数を「焦って早く埋めすぎない、かといって残しすぎない」という、極めて繊細なコントロールが必要になります。</p>
+    </div>
+
+    <p><strong>私たちの考え方とアプローチ</strong></p>
+    <p>「機会損失（売り急ぎ）」と「時間消滅（残しすぎ）」のベストバランスを狙います。早く売りすぎて後半のチャンスを逃す「機会損失」と、高くしすぎて直前に空室になる「時間消滅」。この両極のバランスを、データをもとに見極める必要があります。ブレーキが強すぎて部屋を余らせてもいけませんし、アクセルを踏みすぎて安売りしすぎてもいけません。</p>
+
+    <p><strong>具体的な施策</strong></p>
+    <p>ブッキングカーブ（予約進捗）を意識した「根拠のある価格調整」 — 「○日前までに何室埋まっているべきか」という理想の予約進捗（ブッキングカーブ）を可視化します。直前に空室が残っているからといって、焦りからくる「安易な値下げ」はお宿様とご相談の上、できる限り無くしていきます。ただし、カーブの軌道が適正ラインを下回った場合は、データという根拠を持って「戦略的な調整（価格の適正化）」を行います。勘ではなく、ロジックに基づいてアクセルとブレーキを使い分ける運用の軸を構築します。</p>
+  </div>
+
+  <!-- 宿命3 -->
+  <div class="subsection">
+    <h3><span class="num gold">3</span> 需要の「激しい変動（ボラティリティ）」— 波を見据えた先手の戦略</h3>
+
+    <div class="fate-quote">
+      <div class="label">▼ 宿命 3</div>
+      <p>「日本の美しい四季は、同時に激しい需要の波を生む」— 日本には豊かな四季があります。春の桜、夏の行楽、秋の紅葉、冬の雪。そして、GW・お盆・シルバーウィーク・年末年始などそれぞれのシーズンにおいて、人が動く時期、動かない時期（繁忙期・閑散期）は、ある程度決まっています。既存のシーズンカレンダー（料金ランク）を導入しているお宿様は多いですが、単に「高い時期」「安い時期」として一括りで捉えているだけでは、この激しい波に本当に適したアプローチはできません。現に近年では、長期連休需要の中でも「繁忙日」と「閑散日」の差が顕著に出てきており、より細かなアプローチが必要です。また、だからと言ってAI任せに価格を動的に動かしすぎると、日によって客層がブレて現場のオペレーションやシフト調整が崩壊し、リピーターのユーザーにとっての価格の信頼感も損ねてしまいます。</p>
+    </div>
+
+    <p><strong>私たちの考え方とアプローチ</strong></p>
+    <p>動的に動かしすぎず、シーズンごとの「ユーザーの動き」に合わせたアプローチの切り分けを行います。私たちは、機械的に価格を毎日乱高下させるようなことはしません。現場のオペレーションが安定し、かつリピーターのユーザーが安心して予約できるよう、「繁忙期に早く動くユーザー」と「閑散期に直前で動くユーザー」の特性を見極め、売り方を最初からきれいに切り分ける先手の戦略をとります。</p>
+
+    <p><strong>具体的な施策</strong></p>
+    <p>リードタイムに応じた「ターゲット別切り分け販売」の設計</p>
+    <ul>
+      <li class="gold"><strong>繁忙期アプローチ：</strong>3ヶ月〜半年前から動く「確実にその地を訪れたい優良な先行予約層」に対して、先行予約ならではのメリットを打ち出し、早い段階で確実なベース（土台）を築きます。</li>
+      <li class="gold"><strong>閑散期アプローチ：</strong>直前（2週間〜数日前）まで動かない「直前層」や、平日に動ける特定のターゲット層に対して、既存のメインプランとは完全に切り分けた「専用の入り口（専用プラン・チャネル）」を用意し、現場に負荷をかけない形でアプローチします。</li>
+    </ul>
+  </div>
+
+  <!-- 宿命4 -->
+  <div class="subsection">
+    <h3><span class="num gold">4</span> 顧客ニーズの「多極化・多様化」— 選ばれるためのシンプルさと、直前安売りの脱却</h3>
+
+    <div class="fate-quote">
+      <div class="label">▼ 宿命 4</div>
+      <p>「価値観がバラバラな時代、全員に好かれようとすると誰にも刺さらない」— インバウンド、女子旅、2世代・3世代旅行、ビジネス、LGBTQ+など、現代の旅行スタイルや価値観、過ごし方の違いはかつてないほど多様化しています。既存の固定概念を持った販売スタイルだけでは、この多様な需要を取り切ることはできません。しかし、その一方で「すべてに対応しよう」とプランを乱立させると、お宿様のコンセプトが崩れ、ユーザーを迷わせるだけでなく、直前になって空室を埋めるための「直前割（値引き）」に頼らざるを得なくなってしまいます。ネット販売においては、プランはできるだけシンプルに見せることが重要です。無駄なプランを削ぎ落とし、部屋タイプとの掛け合わせや「早割」などの仕組みを有効活用することで、多様なニーズにスマートに応えます。</p>
+    </div>
+
+    <p><strong>私たちの考え方とアプローチ</strong></p>
+    <p>早割を原動力にしつつ、「直前割」に頼らない間際予約の獲得を目指します。私たちは、3ヶ月〜半年前から計画的に動く優良な顧客層に対しては「早割」をしっかりときかせて早期に客室のベース（土台）を埋め、経営の安定を図ります。その上で、ブッキングカーブに沿って間際の部屋を埋めていく際、私たちが最も重要視するセオリーは、「安易な直前割（値引き）をいかになくしつつ、リードタイムの短い（間際の）予約をいかに適正単価で取り切るか」です。</p>
+
+    <p><strong>具体的な施策</strong></p>
+    <ul>
+      <li class="gold"><strong>「ジャムの法則」に基づいたプランの間引き：</strong>お宿様の強み・特徴を隅々まで調べ上げ、強化すべきターゲット層を明確に選定（絞り込み）します。ニーズに応える名目で乱立する不要なプランを徹底的に「間引き」ます。</li>
+      <li class="gold"><strong>直前の「迷わせない」プラン構成：</strong>予約までのリードタイムが短い間際のユーザーは、じっくりプランを比較する時間がありません。直前になればなるほど、ユーザーが迷わずにパッと判断できる、徹底的にシンプルで強力な「プラン構成・部屋タイプ構成」へと画面を整理します。</li>
+      <li class="gold"><strong>OTAプロモーションの適正化：</strong>プランの整理と同時に、各OTAで「なんとなく参加し続けていた無駄な値引きプロモーション」を洗い出し、適正化します。お宿様のブランドを毀損するような一律の割引キャンペーンへの参加をやめ、狙ったターゲットの露出を上げるために本当に効果のあるプロモーションだけを厳選して組み合わせます。</li>
+    </ul>
+  </div>
+
+</section>
 
 <!-- ============================================================ -->
 <!-- 第1章：OTAとは何か — 基礎知識と仕組み -->
@@ -963,8 +1056,8 @@ Q3. このプランの代わりに既存の別プランで
 </div><!-- /container -->
 
 <footer>
-  <div class="brand">OTA活用ハンドブック</div>
-  <p style="margin-top:4px;">InnBuddy — 宿泊施設のOTAコンサルティング</p>
+  <div class="brand">InnBuddy Knowledge Base</div>
+  <p style="margin-top:4px;">OTAコンサルティング — 宿泊施設の収益改善を支援します</p>
 </footer>
 
 <script>
